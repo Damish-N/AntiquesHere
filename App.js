@@ -1,9 +1,9 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import TabNavigationBar from './navigations/tabNaviagtionBar';
+import DrawerNavigation from './navigations/drawerNavigation';
 
 const App = () => {
-  return <TabNavigationBar />;
+  return <DrawerNavigation />;
 };
 
 export default App;
