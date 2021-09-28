@@ -5,10 +5,6 @@ const HomeScreen = props => {
   return (
     <View>
       <Text>Home Screen</Text>
-      <Button
-        onPress={() => props.navigation.navigate('ProductDetails')}
-        title=" Go to the Detail page"
-      />
     </View>
   );
 };

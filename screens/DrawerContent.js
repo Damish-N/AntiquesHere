@@ -7,10 +7,6 @@ const DrawerContent = props => {
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
-        <View>
-          <Text>Main Content</Text>
-        </View>
-
         <Drawer.Section>
           <DrawerItem
             label="Home"
@@ -21,7 +17,7 @@ const DrawerContent = props => {
           <DrawerItem
             label="Detail"
             onPress={() => {
-              props.navigation.navigate('ProductDetails');
+              props.navigation.navigate('Detail');
             }}
           />
         </Drawer.Section>
