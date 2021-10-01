@@ -26,7 +26,7 @@ const DrawerContent = props => {
           <DrawerItem
             label="Sign Out"
             onPress={() => {
-              props.navigation.replace('SignIn');
+              props.navigation.navigate('SignIn');
             }}
           />
         </Drawer.Section>
