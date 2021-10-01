@@ -1,9 +1,9 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import DrawerNavigation from './navigations/drawerNavigation';
+import MainNavigation from './navigations/mainNavigation';
 
 const App = () => {
-  return <DrawerNavigation />;
+  return <MainNavigation />;
 };
 
 export default App;

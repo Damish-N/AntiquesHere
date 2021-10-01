@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {View} from 'react-native';
 import {Drawer} from 'react-native-paper';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 
@@ -22,7 +23,12 @@ const DrawerContent = props => {
           />
         </Drawer.Section>
         <Drawer.Section>
-          <DrawerItem label="Sign Out" />
+          <DrawerItem
+            label="Sign Out"
+            onPress={() => {
+              props.navigation.navigate('SignIn');
+            }}
+          />
         </Drawer.Section>
       </DrawerContentScrollView>
     </View>
@@ -30,5 +36,3 @@ const DrawerContent = props => {
 };
 
 export default DrawerContent;
-
-const styles = StyleSheet.create({});
