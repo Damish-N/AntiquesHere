@@ -21,7 +21,7 @@ const HomeStackNavigation = () => {
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
-        options={{title: 'All products'}}
+        options={{title: 'All products', headerLeft: () => null}}
       />
       <Stack.Screen
         name="ProductDetails"
