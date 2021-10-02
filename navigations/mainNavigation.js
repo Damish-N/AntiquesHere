@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SignUpScreen from '../screens/SignUpScreen';
 import SignInScreen from '../screens/SignInScreen';
 import DrawerNavigation from './drawerNavigation';
+// import {Auth}
 
 const Stack = createStackNavigator();
 
