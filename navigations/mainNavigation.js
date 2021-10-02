@@ -1,36 +1,35 @@
-import React, {useState, useEffect} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import SignUpScreen from '../screens/SignUpScreen';
-import SignInScreen from '../screens/SignInScreen';
-import DrawerNavigation from './drawerNavigation';
-// import {Auth}
-
-const Stack = createStackNavigator();
+import HomeStackNavigation from './homeScreenNavigation';
+import MainStack from './mainStack';
+import {AuthContext} from './authentication';
+import auth from '@react-native-firebase/auth';
 
 const MainNavigation = () => {
+  const {user, setUser} = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+  const [initializing, setInitializing] = useState(true);
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    console.log(user);
+    if (initializing) setInitializing(false);
+    setLoading(false);
+  }
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+  //   if (loading) {
+  //     return <Loading />;
+  //   }
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen
-          name="SignIn"
-          component={SignInScreen}
-          options={{headerBackVisible: false}}
-        />
-        <Stack.Screen
-          name="SignUp"
-          component={SignUpScreen}
-          options={{headerBackVisible: false}}
-        />
-        <Stack.Screen
-          name="HomePageScreen"
-          component={DrawerNavigation}
-          options={{headerBackVisible: false}}
-        />
-      </Stack.Navigator>
+      {user == null ? (
+        <MainStack intialPage={'SignIn'} />
+      ) : (
+        <MainStack intialPage={'HomePageScreen'} />
+      )}
     </NavigationContainer>
   );
 };
