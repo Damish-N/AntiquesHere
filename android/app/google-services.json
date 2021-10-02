@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "296540468296",
+    "project_id": "antiques-here",
+    "storage_bucket": "antiques-here.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296540468296:android:7229189119b568fc7a947d",
+        "android_client_info": {
+          "package_name": "com.antiqueshere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296540468296-2make5h6d6b7fqlqjo13lo0bkrjt7h0j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6YbogbfFeVzP3M-WXrNLOXL3dDebNjak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296540468296-2make5h6d6b7fqlqjo13lo0bkrjt7h0j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
