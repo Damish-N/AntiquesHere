@@ -12,14 +12,14 @@ const MainNavigation = () => {
   // Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
-    console.log(user);
+    console.log('user is:' + user);
     if (initializing) setInitializing(false);
     setLoading(false);
   }
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
-  }, []);
+  });
   //   if (loading) {
   //     return <Loading />;
   //   }
