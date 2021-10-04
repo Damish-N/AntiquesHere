@@ -6,7 +6,7 @@ const HomeScreen = props => {
   const {user} = useContext(AuthContext);
   return (
     <View>
-      <Text>Home Screen {user.uid}</Text>
+      <Text>Home Screen  {user.uid}</Text>
     </View>
   );
 };
