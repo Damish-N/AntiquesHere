@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   TouchableOpacity,
   Text,
@@ -10,10 +10,13 @@ import {
   TextInput,
 } from 'react-native';
 import Colors from '../constants/Colors';
+import {AuthContext} from '../navigations/authentication';
 
 const SignUpScreen = props => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+
+  const {register} = useContext(AuthContext);
   return (
     <View style={styles.mainConatainer}>
       <View style={styles.headerSection}>
@@ -55,7 +58,9 @@ const SignUpScreen = props => {
             style={styles.buttonArea}
             onPress={() => {
               console.log(userName);
-              props.navigation.navigate('SignIn');
+              const e = register(userName, password);
+              console.log('Values' + e.uid);
+              //   props.navigation.navigate('SignIn');
             }}>
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
