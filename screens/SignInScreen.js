@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   TouchableOpacity,
   Text,
@@ -7,12 +7,63 @@ import {
   StyleSheet,
   Image,
   TextInput,
+  Alert,
+  AsyncStorage,
 } from 'react-native';
 import Colors from '../constants/Colors';
+import {AuthContext} from '../navigations/authentication';
+import auth from '@react-native-firebase/auth';
 
 const SignInScreen = props => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const {login} = useContext(AuthContext);
+
+  const _storeData = async c => {
+    try {
+      console.log(c);
+      await AsyncStorage.setItem('@MySuperStore:key', c);
+    } catch (error) {
+      console.log(error);
+      // Error saving data
+    }
+  };
+
+  const signIn = async () => {
+    try {
+      const c = await auth().signInWithEmailAndPassword(userName, password);
+      const cd = JSON.stringify(c);
+      console.log('return value:' + cd);
+      _storeData(cd);
+      //   login(userName, password);
+      props.navigation.replace('HomePageScreen');
+    } catch (error) {
+      console.log(error);
+      let err = 'sss';
+      console.log(error.code);
+      if (error.code === 'auth/weak-password') {
+        err = 'Password should be at least 6 characters';
+      } else if (error.code === 'auth/email-already-in-use') {
+        err = 'The email address is already in use by another account';
+      } else if (error.code === 'auth/invalid-email') {
+        err = 'The email address is badly formatted';
+      } else if (error.code === 'auth/user-not-found') {
+        err =
+          'There is no user record corresponding to this identifier. The user may have been deleted';
+      } else if (error.code === 'auth/wrong-password') {
+        err = 'User name or password is invalid';
+      }
+      Alert.alert('Error on Login Account', err, [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+    }
+  };
+
   return (
     <View style={styles.mainConatainer}>
       <View style={styles.headerSection}>
@@ -45,8 +96,8 @@ const SignInScreen = props => {
           <TouchableOpacity
             style={styles.buttonArea}
             onPress={() => {
+              signIn();
               console.log(userName);
-              props.navigation.replace('HomePageScreen');
             }}>
             <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>

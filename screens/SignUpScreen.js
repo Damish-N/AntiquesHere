@@ -8,15 +8,44 @@ import {
   StyleSheet,
   Image,
   TextInput,
+  Alert,
 } from 'react-native';
 import Colors from '../constants/Colors';
 import {AuthContext} from '../navigations/authentication';
+import auth from '@react-native-firebase/auth';
 
 const SignUpScreen = props => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
   const {register} = useContext(AuthContext);
+
+  const signUp = async () => {
+    try {
+      await auth().createUserWithEmailAndPassword(userName, password);
+      props.navigation.navigate('SignIn');
+    } catch (error) {
+      console.log(error);
+      let err;
+      console.log(error.code);
+      if (error.code == 'auth/weak-password') {
+        err = 'Password should be at least 6 characters';
+      } else if (error.code == 'auth/email-already-in-use') {
+        err = 'The email address is already in use by another account';
+      } else if (error.code == 'auth/invalid-email') {
+        err = 'The email address is badly formatted';
+      }
+      Alert.alert('Error on Creating Account', err, [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+    }
+  };
+
   return (
     <View style={styles.mainConatainer}>
       <View style={styles.headerSection}>
@@ -58,8 +87,9 @@ const SignUpScreen = props => {
             style={styles.buttonArea}
             onPress={() => {
               console.log(userName);
-              const e = register(userName, password);
-              console.log('Values' + e.uid);
+              signUp();
+              // const e = register(userName, password);
+              //   console.log('Values' + e.uid)
               //   props.navigation.navigate('SignIn');
             }}>
             <Text style={styles.buttonText}>Sign Up</Text>
