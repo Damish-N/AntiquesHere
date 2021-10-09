@@ -3,28 +3,43 @@ import {Text, View, AsyncStorage, FlatList, Button} from 'react-native';
 import {AuthContext} from '../navigations/authentication';
 import firestore from '@react-native-firebase/firestore';
 import ProductItem from '../components/ProductCard';
+import PRODUCTS from '../data/dummy-data';
+
 const HomeScreen = props => {
   const {user} = useContext(AuthContext);
   const [userName, setUserName] = useState('');
-  const [item, setItem] = useState([]);
+  const [item, setItem] = useState(PRODUCTS);
 
-  useEffect(() => {
-    firestore()
-      .collection('Products')
-      .onSnapshot(
-        querySnapshot => {
-          const list = [];
-          querySnapshot.forEach(documentSnapshot => {
-            console.log(documentSnapshot.data());
-            list.push(documentSnapshot.data());
-          });
-          setItem(list);
-        },
-        error => {
-          console.log(error);
-        },
-      );
-  }, []);
+  // useEffect(() => {
+  //   firestore()
+  //     .collection('Products')
+  //     .onSnapshot(
+  //       querySnapshot => {
+  //         const list = [];
+  //         querySnapshot.forEach(documentSnapshot => {
+  //           console.log(documentSnapshot.data().productName);
+  //           list.push(documentSnapshot.data());
+  //         });
+  //         setItem(list);
+  //       },
+  //       error => {
+  //         console.log(error);
+  //       },
+  //     );
+  // }, []);
+
+  async function getProductSpeacial() {
+    const citiesRef = await firestore().collection('Favourite');
+
+    // Create a query against the collection
+    const queryRef = citiesRef.where('email', '==', 'da@gmail.com');
+    // [END firestore_query_filter_eq_string]
+
+    const res = await queryRef.get();
+    res.forEach(doc => {
+      console.log(doc.id, ' => ', doc.email);
+    });
+  }
 
   const _retrieveData = async () => {
     try {
@@ -42,14 +57,20 @@ const HomeScreen = props => {
   };
 
   function added() {
-    firestore().collection('Products').add({
-      name: 'ball',
+    // var rootRef = firestore().collection('Products').ref();
+    // CollectionReference Parent => new CollectionReference(_proxy.Parent(), Firestore)
+    // console.log(CollectionRe);
+    firestore().collection('Favourite').add({
+      email: 'd@gmail.com',
+      listOfFav: [],
     });
-    return undefined;
+    // return undefined;
   }
 
   return (
     <View>
+      <Button title={'added'} onPress={getProductSpeacial} />
+      <Button title={'added2'} onPress={added} />
       <FlatList
         data={item}
         renderItem={itemData => (
@@ -62,7 +83,9 @@ const HomeScreen = props => {
             title={itemData.item.name ? itemData.item.name : 'no name'}
             price={itemData.item.price ? 500.0 : 6000.0}
             onViewDetail={() => {
-              props.navigation.navigate('ProductDetails');
+              props.navigation.navigate('ProductDetailScreenView', {
+                product: itemData.item,
+              });
               // {
               //     productId: itemData.item.id,
               //     productTitle: itemData.item.title,

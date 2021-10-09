@@ -8,24 +8,41 @@ import {
   StyleSheet,
   Image,
   TextInput,
+  ActivityIndicator,
   Alert,
 } from 'react-native';
 import Colors from '../constants/Colors';
 import {AuthContext} from '../navigations/authentication';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const SignUpScreen = props => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const {register} = useContext(AuthContext);
 
   const signUp = async () => {
     try {
       await auth().createUserWithEmailAndPassword(userName, password);
+      try {
+        await firestore().collection('User').add({
+          email: userName,
+          fistName: 'damish',
+          lastName: 'nisal',
+          mobile: '0776560118',
+          listOfFav: [],
+        });
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      }
       props.navigation.navigate('SignIn');
     } catch (error) {
       console.log(error);
+      setLoading(false);
       let err;
       console.log(error.code);
       if (error.code == 'auth/weak-password') {
@@ -87,12 +104,17 @@ const SignUpScreen = props => {
             style={styles.buttonArea}
             onPress={() => {
               console.log(userName);
+              setLoading(true);
               signUp();
               // const e = register(userName, password);
               //   console.log('Values' + e.uid)
               //   props.navigation.navigate('SignIn');
             }}>
-            <Text style={styles.buttonText}>Sign Up</Text>
+            {loading ? (
+              <ActivityIndicator color={Colors.thirdly} />
+            ) : (
+              <Text style={styles.buttonText}>Sign Up</Text>
+            )}
           </TouchableOpacity>
         </View>
 
