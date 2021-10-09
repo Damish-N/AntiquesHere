@@ -4,6 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import HomeStackNavigation from '../navigations/homeScreenNavigation';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import Colors from '../constants/Colors';
+import FavouriteStackNavigation from './favouritScreenNavigation';
 const Tab = createMaterialBottomTabNavigator();
 
 const TabNavigationBar = () => {
@@ -22,18 +23,18 @@ const TabNavigationBar = () => {
         }}
       />
       <Tab.Screen
-        name="Detail"
+        name="Add product"
         component={ProductDetailScreen}
         options={{
-          tabBarLabel: 'Detail',
+          tabBarLabel: 'add new',
           tabBarIcon: ({color}) => (
-            <MaterialCommunityIcons name="details" color={color} size={26} />
+            <MaterialCommunityIcons name="plus-circle" color={color} size={26} />
           ),
         }}
       />
       <Tab.Screen
         name="favourite"
-        component={ProductDetailScreen}
+        component={FavouriteStackNavigation}
         options={{
           tabBarLabel: 'Favourite',
           tabBarIcon: ({color}) => (

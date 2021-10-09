@@ -9,6 +9,7 @@ import {
   TextInput,
   Alert,
   AsyncStorage,
+  ActivityIndicator,
 } from 'react-native';
 import Colors from '../constants/Colors';
 import {AuthContext} from '../navigations/authentication';
@@ -17,14 +18,19 @@ import auth from '@react-native-firebase/auth';
 const SignInScreen = props => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const {login} = useContext(AuthContext);
 
   const _storeData = async c => {
     try {
       console.log(c);
       await AsyncStorage.setItem('@MySuperStore:key', c);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
+
       // Error saving data
     }
   };
@@ -34,10 +40,11 @@ const SignInScreen = props => {
       const c = await auth().signInWithEmailAndPassword(userName, password);
       const cd = JSON.stringify(c);
       console.log('return value:' + cd);
-      _storeData(cd);
+      await _storeData(cd);
       //   login(userName, password);
       props.navigation.replace('HomePageScreen');
     } catch (error) {
+      setLoading(false);
       console.log(error);
       let err = 'sss';
       console.log(error.code);
@@ -96,10 +103,15 @@ const SignInScreen = props => {
           <TouchableOpacity
             style={styles.buttonArea}
             onPress={() => {
+              setLoading(true);
               signIn();
               console.log(userName);
             }}>
-            <Text style={styles.buttonText}>Sign In</Text>
+            {loading ? (
+              <ActivityIndicator color={Colors.thirdly} />
+            ) : (
+              <Text style={styles.buttonText}>Sign in</Text>
+            )}
           </TouchableOpacity>
         </View>
 
