@@ -1,13 +1,12 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import HomeScreen from '../screens/HomeScreen';
-import ProductDetailScreen from '../screens/ProductDetailScreen';
 import Colors from '../constants/Colors';
+import ProductDetailScreen from '../screens/ProductDetailScreen';
 import ProductDetailScreenView from '../screens/ProductDetailScreenView';
+import FavouriteScreen from '../screens/FovouriteScreen';
 
 const Stack = createStackNavigator();
-
-const HomeStackNavigation = () => {
+const FavouriteStackNavigation = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -20,9 +19,9 @@ const HomeStackNavigation = () => {
         },
       }}>
       <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{title: 'All Antiques', headerLeft: () => null}}
+        name="FavouriteList"
+        component={FavouriteScreen}
+        options={{title: 'Favourite List', headerLeft: () => null}}
       />
       <Stack.Screen
         name="ProductDetails"
@@ -38,4 +37,4 @@ const HomeStackNavigation = () => {
   );
 };
 
-export default HomeStackNavigation;
+export default FavouriteStackNavigation;
