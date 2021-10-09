@@ -26,7 +26,6 @@ const ProductItem = props => {
             onPress={props.onViewDetail}
             color={Colors.primary}
           />
-          <Button title="Add to Favourite" onPress={props.onAddToCart} />
         </View>
       </View>
     </TouchableOpacity>
@@ -68,8 +67,9 @@ const styles = StyleSheet.create({
   },
   action: {
     height: '24%',
+    marginTop: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });

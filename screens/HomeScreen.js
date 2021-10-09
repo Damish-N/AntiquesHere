@@ -69,8 +69,8 @@ const HomeScreen = props => {
 
   return (
     <View>
-      <Button title={'added'} onPress={getProductSpeacial} />
-      <Button title={'added2'} onPress={added} />
+      {/*<Button title={'added'} onPress={getProductSpeacial} />*/}
+      {/*<Button title={'added2'} onPress={added} />*/}
       <FlatList
         data={item}
         renderItem={itemData => (
