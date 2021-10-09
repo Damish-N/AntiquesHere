@@ -28,7 +28,7 @@ const ProductItem = props => {
           />
           <Button
             title="Add to favourite"
-            onPress={props.onViewDetail}
+            onPress={props.onAddToCart}
             color={'green'}
           />
         </View>

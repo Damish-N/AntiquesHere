@@ -1,17 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Alert,
   AsyncStorage,
   Button,
   Image,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import {Avatar} from 'react-native-elements';
+import {Avatar, Input} from 'react-native-elements';
 import Colors from '../constants/Colors';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ProfileScreen = () => {
   const [user, setUser] = useState('');
@@ -22,6 +26,8 @@ const ProfileScreen = () => {
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [userProfileData, setUserProfileData] = useState({});
+  const [editable, setEditable] = useState(false);
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
 
   useEffect(() => {
     _retrieveData();
@@ -84,6 +90,28 @@ const ProfileScreen = () => {
     }
   };
 
+  const _updateDetailes = async => {
+    firestore()
+      .collection('User')
+      .doc(user)
+      .update({
+        firstName: firstName,
+        lastName: lastName,
+        mobile: phone,
+      })
+      .then(() => {
+        setLoadingUpdate(false);
+        Alert.alert('Update Profile', 'Successfully updated profile', [
+          {
+            text: 'yes',
+            onPress: () => {
+              console.log('okey');
+            },
+          },
+        ]);
+        console.log('User updated!');
+      });
+  };
   return loading ? (
     <ActivityIndicator />
   ) : (
@@ -106,7 +134,46 @@ const ProfileScreen = () => {
         />
       </View>
       <View style={styles.formContainer}>
-        <Text>Hello</Text>
+        <View style={styles.editContainer}>
+          <Text style={styles.editText}>Edit the profile</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setEditable(!editable);
+            }}>
+            <MaterialCommunityIcons size={20} name={'lead-pencil'} />
+          </TouchableOpacity>
+        </View>
+        <Input
+          label={'First Name'}
+          editable={editable}
+          onChangeText={value => setFirstName(value)}
+          value={firstName}
+          placeholder={'First Name'}
+        />
+        <Input
+          label={'Last Name'}
+          editable={editable}
+          onChangeText={value => setLastName(value)}
+          value={lastName}
+          placeholder={'Last Name'}
+        />
+        <Input
+          label={'Mobile Number'}
+          editable={editable}
+          onChangeText={value => setPhone(value)}
+          value={phone}
+          placeholder={'Mobile Number'}
+        />
+        <View style={styles.btnContainer}>
+          <Button
+            title={'Update Profile'}
+            color={Colors.secondry}
+            onPress={() => {
+              setLoadingUpdate(true);
+              _updateDetailes();
+            }}
+          />
+        </View>
       </View>
     </ScrollView>
   );
@@ -123,7 +190,15 @@ const styles = StyleSheet.create({
     padding: '4%',
   },
   formContainer: {
-    backgroundColor: 'orange',
+    shadowColor: 'black',
+    shadowOpacity: 0.26,
+    shadowOffset: {width: 0, height: 2},
+    shadowRadius: 8,
+    elevation: 5,
+    borderRadius: 10,
+    backgroundColor: 'white',
+    margin: 20,
+    padding: 10,
   },
   headerText: {
     color: Colors.primary,
@@ -134,5 +209,24 @@ const styles = StyleSheet.create({
   headerWelcome: {
     color: 'black',
     fontSize: 15,
+  },
+  inputArea: {
+    borderWidth: 1,
+    borderColor: Colors.secondry,
+    borderRadius: 10,
+    paddingLeft: 10,
+  },
+  editText: {textAlign: 'right', padding: 12, fontSize: 15, marginRight: '7%'},
+  editContainer: {
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  btnContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
   },
 });
