@@ -25,7 +25,7 @@ const SignInScreen = props => {
   const _storeData = async c => {
     try {
       console.log(c);
-      await AsyncStorage.setItem('@MySuperStore:key', c);
+      await AsyncStorage.setItem('userName', c);
       setLoading(false);
     } catch (error) {
       console.log(error);
