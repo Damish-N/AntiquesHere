@@ -1,5 +1,6 @@
 export default {
-  primary: '#C2185B',
+  primary: '#565031',
   secondry: '#FFC107',
   thirdly: 'white',
+  forthly:'#C2185B'
 };

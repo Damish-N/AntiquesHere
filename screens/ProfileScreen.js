@@ -3,11 +3,15 @@ import {
   ActivityIndicator,
   AsyncStorage,
   Button,
+  Image,
+  ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import {Avatar} from 'react-native-elements';
+import Colors from '../constants/Colors';
 
 const ProfileScreen = () => {
   const [user, setUser] = useState('');
@@ -54,7 +58,7 @@ const ProfileScreen = () => {
       .where('email', '==', e)
       .get()
       .then(querySnapshot => {
-        console.log('Total users: ', querySnapshot.size);
+        console.log('Total users:', querySnapshot.size);
 
         querySnapshot.forEach(documentSnapshot => {
           console.log(
@@ -83,23 +87,52 @@ const ProfileScreen = () => {
   return loading ? (
     <ActivityIndicator />
   ) : (
-    <View>
-      <Text>
-        Hello{user}
-        {firstName}
-        {lastName}
-        {phone}
-      </Text>
-      <Button
-        title={'add'}
-        onPress={() => {
-          setLoading(true);
-        }}
-      />
-    </View>
+    <ScrollView style={styles.container}>
+      <View style={styles.imageContainer}>
+        <Text style={styles.headerWelcome}>Hello!</Text>
+        <Text style={styles.headerText}>
+          {firstName.toUpperCase()} {lastName.toUpperCase()}
+        </Text>
+        <Avatar
+          size="xlarge"
+          rounded
+          title={
+            firstName.substring(0, 1).toUpperCase() +
+            lastName.substring(0, 1).toUpperCase()
+          }
+          source={{
+            uri: 'https://api-private.atlassian.com/users/8f525203adb5093c5954b43a5b6420c2/avatar',
+          }}
+        />
+      </View>
+      <View style={styles.formContainer}>
+        <Text>Hello</Text>
+      </View>
+    </ScrollView>
   );
 };
 
 export default ProfileScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    padding: '4%',
+  },
+  formContainer: {
+    backgroundColor: 'orange',
+  },
+  headerText: {
+    color: Colors.primary,
+    fontWeight: 'bold',
+    fontSize: 19,
+    marginBottom: 10,
+  },
+  headerWelcome: {
+    color: 'black',
+    fontSize: 15,
+  },
+});
