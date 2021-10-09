@@ -26,7 +26,7 @@ const HomeStackNavigation = () => {
       <Stack.Screen
         name="ProductDetails"
         component={ProductDetailScreen}
-        options={{title: 'products Deatials'}}
+        options={{title: 'products Details'}}
       />
     </Stack.Navigator>
   );
