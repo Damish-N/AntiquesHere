@@ -1,9 +1,19 @@
 import React from 'react';
-import {Button, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Colors from '../constants/Colors';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ButtonIconPapper from "../components/Button";
 
 const ProductDetailsView = ({route}) => {
-  const {product} = route.params;
+  const {product,productId} = route.params;
   return (
     <ScrollView>
       <Image source={{uri: product.imageUrl}} style={styles.image} />
@@ -20,6 +30,12 @@ const ProductDetailsView = ({route}) => {
         </View>
         <Text style={styles.price}>Rs:{product.price}</Text>
         <Text style={styles.description}>{product.description}</Text>
+        <Text style={styles.description}>{productId}</Text>
+      </View>
+      <View>
+        {/*<TouchableOpacity>*/}
+        {/*  <ButtonIconPapper iconName={'call'} detail={product.contactNo.toString()}/>*/}
+        {/*</TouchableOpacity>*/}
       </View>
     </ScrollView>
   );

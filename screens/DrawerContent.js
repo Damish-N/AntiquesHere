@@ -16,9 +16,9 @@ const DrawerContent = props => {
             }}
           />
           <DrawerItem
-            label="Detail"
+            label="Add new Product"
             onPress={() => {
-              props.navigation.navigate('Detail');
+              props.navigation.navigate('AddNewProduct');
             }}
           />
         </Drawer.Section>

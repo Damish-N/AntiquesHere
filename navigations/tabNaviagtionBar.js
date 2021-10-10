@@ -5,6 +5,7 @@ import HomeStackNavigation from '../navigations/homeScreenNavigation';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import Colors from '../constants/Colors';
 import FavouriteStackNavigation from './favouritScreenNavigation';
+import ProfileStackNavigation from './profileScreenNavigation';
 const Tab = createMaterialBottomTabNavigator();
 
 const TabNavigationBar = () => {
@@ -23,12 +24,16 @@ const TabNavigationBar = () => {
         }}
       />
       <Tab.Screen
-        name="Add product"
+        name="AddNewProduct"
         component={ProductDetailScreen}
         options={{
           tabBarLabel: 'add new',
           tabBarIcon: ({color}) => (
-            <MaterialCommunityIcons name="plus-circle" color={color} size={26} />
+            <MaterialCommunityIcons
+              name="plus-circle"
+              color={color}
+              size={26}
+            />
           ),
         }}
       />
@@ -44,7 +49,7 @@ const TabNavigationBar = () => {
       />
       <Tab.Screen
         name="profile"
-        component={ProductDetailScreen}
+        component={ProfileStackNavigation}
         options={{
           tabBarLabel: 'profile',
           tabBarIcon: ({color}) => (
