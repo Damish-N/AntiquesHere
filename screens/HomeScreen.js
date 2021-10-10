@@ -91,7 +91,7 @@ const HomeScreen = props => {
             onViewDetail={() => {
               props.navigation.navigate('ProductDetailScreenView', {
                 product: itemData.item,
-                  productId:idList[itemData.index],
+                productId: idList[itemData.index],
               });
               // {
               //     productId: itemData.item.id,

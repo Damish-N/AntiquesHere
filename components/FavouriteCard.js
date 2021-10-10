@@ -20,7 +20,7 @@ const FavouriteCard = props => {
         {
           text: 'yes',
           onPress: () => {
-            console.log('okey');
+            props.onClick();
           },
         },
       ],
@@ -44,7 +44,7 @@ const FavouriteCard = props => {
           />
         </View>
         <View style={styles.contentArea}>
-          <Text style={{fontSize: 20, marginBottom: 3}}>Product Name</Text>
+          <Text style={{fontSize: 20, marginBottom: 3}}>{props.title}</Text>
           <Text style={{fontSize: 14, color: 'grey', marginBottom: 3}}>
             Rs.300.00
           </Text>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 10,
     backgroundColor: 'white',
-    height: '22%',
+    height: 140,
     margin: 20,
     padding: 10,
   },
