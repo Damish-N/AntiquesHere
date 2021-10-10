@@ -6,6 +6,7 @@ import ProductDetailScreen from '../screens/ProductDetailScreen';
 import Colors from '../constants/Colors';
 import FavouriteStackNavigation from './favouritScreenNavigation';
 import ProfileStackNavigation from './profileScreenNavigation';
+import AddScreenStackNavigation from "./addpostNavigation";
 const Tab = createMaterialBottomTabNavigator();
 
 const TabNavigationBar = () => {
@@ -25,7 +26,7 @@ const TabNavigationBar = () => {
       />
       <Tab.Screen
         name="AddNewProduct"
-        component={ProductDetailScreen}
+        component={AddScreenStackNavigation}
         options={{
           tabBarLabel: 'add new',
           tabBarIcon: ({color}) => (
