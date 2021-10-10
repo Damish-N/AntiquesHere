@@ -4,6 +4,10 @@ import Colors from '../constants/Colors';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import ProductDetailScreenView from '../screens/ProductDetailScreenView';
 import FavouriteScreen from '../screens/FovouriteScreen';
+import { Icon } from 'react-native-elements'
+import {Button, View} from "react-native";
+import {IconButton} from "react-native-paper";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Stack = createStackNavigator();
 const FavouriteStackNavigation = () => {
@@ -21,7 +25,11 @@ const FavouriteStackNavigation = () => {
       <Stack.Screen
         name="FavouriteList"
         component={FavouriteScreen}
-        options={{title: 'Favourite List', headerLeft: () => null}}
+        options={{
+          title: 'Favourite List',
+          headerLeft: () => null,
+
+        }}
       />
       <Stack.Screen
         name="ProductDetails"
