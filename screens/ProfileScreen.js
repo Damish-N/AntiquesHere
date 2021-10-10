@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
-  AsyncStorage,
   Button,
   Image,
   ScrollView,
@@ -16,6 +15,7 @@ import firestore from '@react-native-firebase/firestore';
 import {Avatar, Input} from 'react-native-elements';
 import Colors from '../constants/Colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = () => {
   const [user, setUser] = useState('');

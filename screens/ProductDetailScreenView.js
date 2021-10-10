@@ -13,7 +13,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import ButtonIconPapper from "../components/Button";
 
 const ProductDetailsView = ({route}) => {
-  const {product} = route.params;
+  const {product,productId} = route.params;
   return (
     <ScrollView>
       <Image source={{uri: product.imageUrl}} style={styles.image} />
@@ -30,11 +30,12 @@ const ProductDetailsView = ({route}) => {
         </View>
         <Text style={styles.price}>Rs:{product.price}</Text>
         <Text style={styles.description}>{product.description}</Text>
+        <Text style={styles.description}>{productId}</Text>
       </View>
       <View>
-        <TouchableOpacity>
-          <ButtonIconPapper iconName={'call'} detail={product.contactNo.toString()}/>
-        </TouchableOpacity>
+        {/*<TouchableOpacity>*/}
+        {/*  <ButtonIconPapper iconName={'call'} detail={product.contactNo.toString()}/>*/}
+        {/*</TouchableOpacity>*/}
       </View>
     </ScrollView>
   );

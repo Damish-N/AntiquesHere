@@ -8,12 +8,12 @@ import {
   Image,
   TextInput,
   Alert,
-  AsyncStorage,
   ActivityIndicator,
 } from 'react-native';
 import Colors from '../constants/Colors';
 import {AuthContext} from '../navigations/authentication';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignInScreen = props => {
   const [userName, setUserName] = useState('');

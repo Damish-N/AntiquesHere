@@ -24,7 +24,7 @@ const TabNavigationBar = () => {
         }}
       />
       <Tab.Screen
-        name="Add product"
+        name="AddNewProduct"
         component={ProductDetailScreen}
         options={{
           tabBarLabel: 'add new',

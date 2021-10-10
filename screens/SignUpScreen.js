@@ -29,7 +29,7 @@ const SignUpScreen = props => {
       try {
         await firestore().collection('User').add({
           email: userName,
-          fistName: 'damish',
+          firstName: 'damish',
           lastName: 'nisal',
           mobile: '0776560118',
           listOfFav: [],
