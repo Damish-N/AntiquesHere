@@ -13,10 +13,17 @@ import {utils} from '@react-native-firebase/app';
 import storage from '@react-native-firebase/storage';
 import uuid from 'react-native-uuid';
 import firestore from '@react-native-firebase/firestore';
+import Colors from '../constants/Colors';
+import {Input} from 'react-native-elements';
 
 const AddedPostScreen = () => {
   const [editable, setEditable] = useState(false);
   const [url, setUrl] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [contactNo, setContactNo] = useState('');
+  const [creadtedBy, setCreadtedBy] = useState('');
   const [imagePath, setImagePath] = useState(
     'https://api-private.atlassian.com/users/8f525203adb5093c5954b43a5b6420c2/avatar',
   );
@@ -41,7 +48,7 @@ const AddedPostScreen = () => {
       console.log(image);
       setImagePath(image.path);
       if (image) {
-        _uploadImage(image.path);
+        // _uploadImage(image.path);
         // _getUrl('004.png');
       }
     });
@@ -55,9 +62,9 @@ const AddedPostScreen = () => {
     // setUrl(url.toString);
   };
 
-  const _uploadImage = async (path) => {
+  const _uploadImage = async path => {
     var today = new Date();
-
+    console.log('url pathaaa:', path);
     var time =
       today.getHours().toString() +
       today.getMinutes().toString() +
@@ -89,15 +96,23 @@ const AddedPostScreen = () => {
     firestore()
       .collection('Products')
       .add({
-        contactNo: '0776560119',
-        createdBy: 'Damish',
-        description: 'jsldjsdsljdsjdsj',
+        contactNo: contactNo,
+        createdBy: creadtedBy,
+        description: description,
         imageUrl: url,
-        price: 150.0,
-        title: 'Phone',
+        price: price,
+        title: title,
       })
       .then(() => {
         console.log('Post added!');
+        setCreadtedBy('');
+        setPrice('');
+        setContactNo('');
+        setTitle('');
+        setDescription('');
+        setImagePath(
+          'https://api-private.atlassian.com/users/8f525203adb5093c5954b43a5b6420c2/avatar',
+        );
       });
   };
 
@@ -135,13 +150,61 @@ const AddedPostScreen = () => {
             }}
             style={styles.image}
           />
-          <Button title={'Using Camera'} onPress={() => _uploadByCam()} />
-          <Button title={'Using Gallery'} onPress={() => _uploadByGallery()} />
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={styles.buttonAreaContain}>
+              <Button
+                title={'Using Camera'}
+                onPress={() => _uploadByCam()}
+                color={Colors.secondry}
+              />
+            </View>
+            <View style={styles.buttonAreaContain}>
+              <Button
+                title={'Using Gallery'}
+                onPress={() => _uploadByGallery()}
+                color={Colors.secondry}
+              />
+            </View>
+          </View>
         </View>
       </View>
 
       <View style={styles.formContain}>
-        <Text>{url ? url.toString() : 'no url'}</Text>
+        <View style={styles.formContainer}>
+          <Input
+            label={'Title'}
+            onChangeText={v => setTitle(v)}
+            value={title}
+          />
+          <Input
+            label={'Description'}
+            onChangeText={v => setDescription(v)}
+            value={description}
+          />
+          <Input
+            label={'Price'}
+            onChangeText={v => setPrice(v)}
+            value={price}
+            keyboardType={'numeric'}
+          />
+          <Input
+            label={'contact Number'}
+            onChangeText={v => setContactNo(v)}
+            value={contactNo}
+          />
+          <Input
+            label={'Created By'}
+            onChangeText={v => setCreadtedBy(v)}
+            value={creadtedBy}
+          />
+          <View style={styles.buttonAreaContain}>
+            <Button
+              title={'Submit'}
+              onPress={() => _uploadImage(imagePath)}
+              color={Colors.secondry}
+            />
+          </View>
+        </View>
       </View>
     </ScrollView>
   );
@@ -155,18 +218,34 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '100%',
+    height: '80%',
   },
   imageContainer: {
     width: '65%',
     height: '80%',
   },
-  formContain: {height: 500, backgroundColor: 'red'},
+  // formContain: {backgroundColor: 'red'},
   imageSection: {
     paddingTop: 10,
-    height: 400,
-    backgroundColor: 'green',
-    justifyContent: 'flex-start',
+    height: 320,
+    justifyContent: 'center',
     alignItems: 'center',
+  },
+  buttonAreaContain: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  formContainer: {
+    shadowColor: 'black',
+    shadowOpacity: 0.26,
+    shadowOffset: {width: 0, height: 2},
+    shadowRadius: 8,
+    elevation: 5,
+    borderRadius: 10,
+    backgroundColor: 'white',
+    margin: 20,
+    padding: 10,
   },
 });
