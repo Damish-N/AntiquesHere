@@ -44,7 +44,7 @@ const FavouriteCard = props => {
           />
         </View>
         <View style={styles.contentArea}>
-          <Text style={{fontSize: 20, marginBottom: 3}}>Product Name</Text>
+          <Text style={{fontSize: 20, marginBottom: 3}}>{props.title}</Text>
           <Text style={{fontSize: 14, color: 'grey', marginBottom: 3}}>
             Rs.300.00
           </Text>
