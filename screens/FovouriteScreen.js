@@ -1,5 +1,12 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {Button, FlatList, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  Alert,
+  Button,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import FavouriteCard from '../components/FavouriteCard';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -110,11 +117,53 @@ const FavouriteScreen = props => {
     // }
   };
 
+  function clickHere(k, index) {
+    console.log('click the delete' + post[0].title.toString());
+    // listFav.reduce()
+    const deleteVal = listFav[index];
+    const delPost = post.filter((p, indexNumber) => indexNumber != index);
+    const delList = listFav.filter(p => p !== k);
+
+    setPosts(delPost);
+    setListFav(delList);
+    _updateDetailes(deleteVal);
+  }
+
+  const _updateDetailes = async deleteValue => {
+    // console.log({listFav});
+    firestore()
+      .collection('User')
+      .doc(key)
+      .update({
+        listOfFav: firestore.FieldValue.arrayRemove(deleteValue),
+      })
+      .then(() => {
+        // setLoadingUpdate(false);
+        Alert.alert(
+          'Added to Favourite',
+          'Successfully added to favourite list',
+          [
+            {
+              text: 'Okey',
+              onPress: () => {
+                console.log('okey');
+              },
+            },
+          ],
+        );
+        console.log('User updated!');
+      });
+  };
   return (
     <View>
       <FlatList
         data={post}
-        renderItem={r => <FavouriteCard title={r.item.title} />}
+        renderItem={r => (
+          <FavouriteCard
+            title={r.item.title}
+            onClick={() => clickHere(listFav[r.index], r.index)}
+          />
+        )}
       />
       {/*<Button title={'get'} onPress={() => _getPostOfFavourite()} />*/}
     </View>

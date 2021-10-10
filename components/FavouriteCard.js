@@ -20,7 +20,7 @@ const FavouriteCard = props => {
         {
           text: 'yes',
           onPress: () => {
-            console.log('okey');
+            props.onClick();
           },
         },
       ],
