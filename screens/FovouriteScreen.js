@@ -161,6 +161,7 @@ const FavouriteScreen = props => {
         renderItem={r => (
           <FavouriteCard
             title={r.item.title}
+            product={r.item}
             onClick={() => clickHere(listFav[r.index], r.index)}
           />
         )}

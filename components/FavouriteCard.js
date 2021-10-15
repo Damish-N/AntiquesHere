@@ -38,7 +38,9 @@ const FavouriteCard = props => {
         <View style={styles.imageArea}>
           <Image
             source={{
-              uri: 'https://5.imimg.com/data5/KC/PC/MY-38629861/dummy-chronograph-watch-500x500.jpg',
+              uri: props.product.imageUrl
+                ? props.product.imageUrl
+                : 'https://5.imimg.com/data5/KC/PC/MY-38629861/dummy-chronograph-watch-500x500.jpg',
             }}
             style={styles.image}
           />
@@ -46,9 +48,11 @@ const FavouriteCard = props => {
         <View style={styles.contentArea}>
           <Text style={{fontSize: 20, marginBottom: 3}}>{props.title}</Text>
           <Text style={{fontSize: 14, color: 'grey', marginBottom: 3}}>
-            Rs.300.00
+            Rs. {props.product.price ? props.product.price : '300.00'}
           </Text>
-          <Text>created by:damish</Text>
+          <Text>
+            Created By :{props.product.createdBy ? props.product.createdBy : 'damish'}
+          </Text>
         </View>
         <TouchableOpacity
           style={styles.contentAreaDelete}
