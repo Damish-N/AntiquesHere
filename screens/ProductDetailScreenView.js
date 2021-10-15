@@ -152,11 +152,12 @@ const ProductDetailsView = ({route}) => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              Linking.openURL(`tel:${'0776560118'}`).then(supported => {
+              console.log(product.contactNo);
+              Linking.openURL('tel:' + product.contactNo).then(supported => {
                 if (!supported) {
                   Alert.alert('Phone number is not available');
                 } else {
-                  return Linking.openURL(`tel:${'0776560118'}`);
+                  return Linking.openURL('tel:' + product.contactNo);
                 }
               });
             }}
@@ -242,7 +243,7 @@ const styles = StyleSheet.create({
   descriptionCard: {
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: '#d3d3d3',
+    backgroundColor: '#f3f0f0',
     padding: 4,
     width: '90%',
     // boxShadow:

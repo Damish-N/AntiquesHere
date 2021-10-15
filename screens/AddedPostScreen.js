@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  Alert,
   Button,
   Image,
   ScrollView,
@@ -33,10 +34,17 @@ const AddedPostScreen = () => {
       width: 300,
       height: 400,
       cropping: true,
-    }).then(image => {
-      console.log(image.path);
-      setImagePath(image.path);
-    });
+    })
+      .then(image => {
+        console.log(image.path);
+        setImagePath(image.path);
+      })
+      .catch(error => {
+        console.log(error);
+        setImagePath(
+          'https://www.pinclipart.com/picdir/middle/126-1266771_post-page-to-add-pictures-comments-add-post.png',
+        );
+      });
   }
 
   function _uploadByGallery() {
@@ -44,14 +52,21 @@ const AddedPostScreen = () => {
       width: 300,
       height: 400,
       cropping: true,
-    }).then(image => {
-      console.log(image);
-      setImagePath(image.path);
-      if (image) {
-        // _uploadImage(image.path);
-        // _getUrl('004.png');
-      }
-    });
+    })
+      .then(image => {
+        console.log(image);
+        setImagePath(image.path);
+        if (image) {
+          // _uploadImage(image.path);
+          // _getUrl('004.png');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        setImagePath(
+          'https://www.pinclipart.com/picdir/middle/126-1266771_post-page-to-add-pictures-comments-add-post.png',
+        );
+      });
   }
   const _getUrl = async image => {
     const url = await storage()
@@ -105,14 +120,33 @@ const AddedPostScreen = () => {
       })
       .then(() => {
         console.log('Post added!');
+        Alert.alert('Adding Post', 'SuccessFully added to system', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
         setCreadtedBy('');
         setPrice('');
         setContactNo('');
         setTitle('');
         setDescription('');
         setImagePath(
-          'https://api-private.atlassian.com/users/8f525203adb5093c5954b43a5b6420c2/avatar',
+          'https://www.pinclipart.com/picdir/middle/126-1266771_post-page-to-add-pictures-comments-add-post.png',
         );
+      })
+      .catch(error => {
+        Alert.alert('Adding Post', 'Error on Adding', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+        console.log(error);
       });
   };
 
