@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   descriptionCard: {
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: '#f3f0f0',
+    backgroundColor: '#d0cccc',
     padding: 4,
     width: '90%',
     // boxShadow:
