@@ -15,6 +15,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import ButtonIconPapper from '../components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
+import {white} from 'react-native-paper/lib/typescript/styles/colors';
 
 const ProductDetailsView = ({route}) => {
   const [key, setKey] = useState('');
@@ -129,7 +130,16 @@ const ProductDetailsView = ({route}) => {
         </View>
         <Text style={styles.price}>Rs:{product.price}</Text>
 
-        <Text style={styles.description}>{product.description}</Text>
+        <View
+          style={{
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <View style={styles.descriptionCard}>
+            <Text style={styles.description1}>{product.description}</Text>
+          </View>
+        </View>
 
         <Text style={styles.description}>SELLING ID : {productId}</Text>
         <View
@@ -211,8 +221,14 @@ const styles = StyleSheet.create({
     color: 'black',
     marginVertical: 10,
   },
-  description: {
+  description1: {
     textAlign: 'justify',
+    fontSize: 18,
+    paddingHorizontal: 15,
+    color: '#595656',
+  },
+  description: {
+    textAlign: 'center',
     fontSize: 18,
     paddingHorizontal: 15,
     color: '#595656',
@@ -222,5 +238,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'center',
+  },
+  descriptionCard: {
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: '#d3d3d3',
+    padding: 4,
+    width: '90%',
+    // boxShadow:
+    marginBottom: 10,
   },
 });
