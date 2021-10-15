@@ -25,7 +25,7 @@ const AddedPostScreen = () => {
   const [contactNo, setContactNo] = useState('');
   const [creadtedBy, setCreadtedBy] = useState('');
   const [imagePath, setImagePath] = useState(
-    'https://api-private.atlassian.com/users/8f525203adb5093c5954b43a5b6420c2/avatar',
+    'https://www.pinclipart.com/picdir/middle/126-1266771_post-page-to-add-pictures-comments-add-post.png',
   );
 
   function _uploadByCam() {
