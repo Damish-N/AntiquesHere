@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking,
 } from 'react-native';
 import Colors from '../constants/Colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -110,7 +111,7 @@ const ProductDetailsView = ({route}) => {
                   'Already Exits in the favourite list ',
                   [
                     {
-                      text: 'yes',
+                      text: 'Okay Got it ',
                       onPress: () => {
                         console.log('okey');
                       },
@@ -127,13 +128,65 @@ const ProductDetailsView = ({route}) => {
           />
         </View>
         <Text style={styles.price}>Rs:{product.price}</Text>
+
         <Text style={styles.description}>{product.description}</Text>
-        <Text style={styles.description}>{productId}</Text>
-        {listFav.length > 0 ? (
-          listFav.map(e => <Text key={e}>{e}</Text>)
-        ) : (
-          <Text>no Data </Text>
-        )}
+
+        <Text style={styles.description}>SELLING ID : {productId}</Text>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-around',
+            marginVertical: 10,
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              Linking.openURL(`tel:${'0776560118'}`).then(supported => {
+                if (!supported) {
+                  Alert.alert('Phone number is not available');
+                } else {
+                  return Linking.openURL(`tel:${'0776560118'}`);
+                }
+              });
+            }}
+            style={{
+              width: '30%',
+              backgroundColor: Colors.forthly,
+              justifyContent: 'center',
+              padding: 10,
+              borderRadius: 10,
+            }}>
+            <Text style={{textAlign: 'center', color: Colors.thirdly}}>
+              Call
+            </Text>
+            <Text style={{textAlign: 'center', color: Colors.thirdly}}>
+              {product.contactNo}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => console.log('Message')}
+            style={{
+              width: '30%',
+              backgroundColor: Colors.forthly,
+              justifyContent: 'center',
+              padding: 10,
+              borderRadius: 10,
+            }}>
+            <Text style={{textAlign: 'center', color: Colors.thirdly}}>
+              Message
+            </Text>
+            <Text style={{textAlign: 'center', color: Colors.thirdly}}>
+              {product.contactNo}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/*{listFav.length > 0 ? (*/}
+        {/*  listFav.map(e => <Text key={e}>{e}</Text>)*/}
+        {/*) : (*/}
+        {/*  <Text>no Data </Text>*/}
+        {/*)}*/}
       </View>
       <View>
         {/*<TouchableOpacity>*/}
@@ -159,10 +212,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   description: {
-    textAlign: 'center',
+    textAlign: 'justify',
     fontSize: 18,
     paddingHorizontal: 15,
-    color: '#888',
+    color: '#595656',
   },
   btn: {
     marginVertical: 10,

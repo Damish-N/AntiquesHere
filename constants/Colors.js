@@ -1,6 +1,8 @@
 export default {
-  primary: '#565031',
-  secondry: '#FFC107',
+  primary: '#000000',
+  // secondry: '#FFC107',
+  secondry:"#872656",
   thirdly: 'white',
-  forthly:'#C2185B'
+  forthly: '#872656',
+  fifth: '#872656',
 };
