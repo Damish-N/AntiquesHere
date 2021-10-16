@@ -28,6 +28,11 @@ const AddedPostScreen = () => {
   const [imagePath, setImagePath] = useState(
     'https://www.pinclipart.com/picdir/middle/126-1266771_post-page-to-add-pictures-comments-add-post.png',
   );
+  const [titleError, setTiltleError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
+  const [priceError, setPriceError] = useState('');
+  const [contactNoError, setContactNoError] = useState('');
+  const [creadtedByError, setCreadtedByError] = useState('');
 
   function _uploadByCam() {
     ImagePicker.openCamera({
@@ -174,6 +179,51 @@ const AddedPostScreen = () => {
     }
   };
 
+  function validateTitle() {
+    if (title === '') {
+      setTiltleError('*Title must be added');
+    } else {
+      setTiltleError('No error');
+    }
+  }
+
+  function validateDescription() {
+    if (description === '') {
+      setDescriptionError('*Description must be added');
+    } else {
+      setDescriptionError('No error');
+    }
+  }
+
+  function validatePrice() {
+    if (price === '') {
+      setPriceError('*Price cannot be empty');
+    } else {
+      setPriceError('No error');
+    }
+  }
+
+  function validateContactNo() {
+    const regex =
+      /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/i;
+    const valid = regex.test(contactNo);
+    if (contactNo === '') {
+      setContactNoError('*Contact no cannot be empty');
+    } else if (!valid) {
+      setContactNoError('*Contact number is not valid');
+    } else {
+      setContactNoError('No error');
+    }
+  }
+
+  function validateCreatedBy() {
+    if (creadtedBy === '') {
+      setCreadtedByError('*Created by cannot be empty');
+    } else {
+      setCreadtedByError('No error');
+    }
+  }
+
   return (
     <ScrollView style={styles.containerScreen}>
       <View style={styles.imageSection}>
@@ -209,30 +259,51 @@ const AddedPostScreen = () => {
             label={'Title'}
             onChangeText={v => setTitle(v)}
             value={title}
+            errorMessage={titleError !== 'No error' ? titleError : null}
+            onEndEditing={() => validateTitle()}
           />
           <Input
             label={'Description'}
             onChangeText={v => setDescription(v)}
             value={description}
+            onEndEditing={() => validateDescription()}
+            errorMessage={
+              descriptionError !== 'No error' ? descriptionError : null
+            }
           />
           <Input
             label={'Price'}
             onChangeText={v => setPrice(v)}
             value={price}
             keyboardType={'numeric'}
+            onEndEditing={() => validatePrice()}
+            errorMessage={priceError !== 'No error' ? priceError : null}
           />
           <Input
             label={'contact Number'}
             onChangeText={v => setContactNo(v)}
             value={contactNo}
+            onEndEditing={() => validateContactNo()}
+            errorMessage={contactNoError !== 'No error' ? contactNoError : null}
           />
           <Input
             label={'Created By'}
             onChangeText={v => setCreadtedBy(v)}
             value={creadtedBy}
+            onEndEditing={() => validateCreatedBy()}
+            errorMessage={
+              creadtedByError !== 'No error' ? creadtedByError : null
+            }
           />
           <View style={styles.buttonAreaContain}>
             <Button
+              disabled={
+                titleError !== 'No error' ||
+                descriptionError !== 'No error' ||
+                priceError !== 'No error' ||
+                contactNoError !== 'No error' ||
+                creadtedByError !== 'No error'
+              }
               title={'Submit'}
               onPress={() => _uploadImage(imagePath)}
               color={Colors.secondry}

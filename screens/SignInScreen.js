@@ -123,8 +123,8 @@ const SignInScreen = props => {
             props.navigation.navigate('SignUp');
           }}>
           <View style={{flexDirection: 'row'}}>
-            <Text>Do you have a account?</Text>
-            <Text style={styles.bottomTextArea}>Sign In</Text>
+            <Text>Do you haven't a account?</Text>
+            <Text style={styles.bottomTextArea}>Sign Up</Text>
           </View>
         </TouchableOpacity>
       </View>
