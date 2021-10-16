@@ -10,6 +10,7 @@ import {
   TextInput,
   ActivityIndicator,
   Alert,
+  ScrollView,
 } from 'react-native';
 import Colors from '../constants/Colors';
 import {AuthContext} from '../navigations/authentication';
@@ -19,6 +20,11 @@ import firestore from '@react-native-firebase/firestore';
 const SignUpScreen = props => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [rePassword, setRePassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [contactNo, setContactNo] = useState('');
+
   const [loading, setLoading] = useState(false);
 
   const {register} = useContext(AuthContext);
@@ -29,9 +35,9 @@ const SignUpScreen = props => {
       try {
         await firestore().collection('User').add({
           email: userName,
-          firstName: 'damish',
-          lastName: 'nisal',
-          mobile: '0776560118',
+          firstName: firstName,
+          lastName: lastName,
+          mobile: contactNo,
           listOfFav: [],
         });
         setLoading(false);
@@ -74,63 +80,81 @@ const SignUpScreen = props => {
         </View>
         <Text style={styles.welcomeText}>Welcome to Antiques</Text>
       </View>
-      <View style={styles.footerSection}>
-        <Text style={styles.signInText}>Sign Up Page</Text>
+      <ScrollView style={styles.footerSection}>
+        <View>
+          <Text style={styles.signInText}>Sign Up Page</Text>
+          <TextInput
+            style={styles.textArea}
+            placeholder="User Name"
+            value={userName}
+            onChangeText={Value => setUserName(Value)}
+          />
+          <TextInput
+            style={styles.textArea}
+            placeholder="Password"
+            value={password}
+            secureTextEntry={true}
+            onChangeText={Value => setPassword(Value)}
+          />
 
-        <TextInput
-          style={styles.textArea}
-          placeholder="User Name"
-          value={userName}
-          onChangeText={Value => setUserName(Value)}
-        />
-        <TextInput
-          style={styles.textArea}
-          placeholder="Password"
-          value={password}
-          secureTextEntry={true}
-          onChangeText={Value => setPassword(Value)}
-        />
-
-        <TextInput
-          style={styles.textArea}
-          placeholder="Re Enter Password"
-          value={password}
-          secureTextEntry={true}
-          onChangeText={Value => setPassword(Value)}
-        />
-
-        <View style={styles.buttonAreaContainer}>
+          <TextInput
+            style={styles.textArea}
+            placeholder="Re Enter Password"
+            value={rePassword}
+            secureTextEntry={true}
+            onChangeText={Value => setRePassword(Value)}
+          />
+          <TextInput
+            style={styles.textArea}
+            placeholder="First Name"
+            value={firstName}
+            onChangeText={Value => setFirstName(Value)}
+          />
+          <TextInput
+            style={styles.textArea}
+            placeholder="Last Name"
+            value={lastName}
+            onChangeText={Value => setLastName(Value)}
+          />
+          <TextInput
+            style={styles.textArea}
+            placeholder="Contact No"
+            value={contactNo}
+            onChangeText={Value => setContactNo(Value)}
+          />
           <TouchableOpacity
-            style={styles.buttonArea}
+            style={styles.bottomText}
+            activeOpacity={0.6}
+            underlayColor="#DDDDDD"
             onPress={() => {
-              console.log(userName);
-              setLoading(true);
-              signUp();
-              // const e = register(userName, password);
-              //   console.log('Values' + e.uid)
-              //   props.navigation.navigate('SignIn');
+              props.navigation.navigate('SignIn');
             }}>
-            {loading ? (
-              <ActivityIndicator color={Colors.thirdly} />
-            ) : (
-              <Text style={styles.buttonText}>Sign Up</Text>
-            )}
+            <View style={{flexDirection: 'row'}}>
+              <Text>Do you have a account?</Text>
+              <Text style={styles.bottomTextArea}>Sign In</Text>
+            </View>
           </TouchableOpacity>
-        </View>
 
-        <TouchableOpacity
-          style={styles.bottomText}
-          activeOpacity={0.6}
-          underlayColor="#DDDDDD"
-          onPress={() => {
-            props.navigation.navigate('SignIn');
-          }}>
-          <View style={{flexDirection: 'row'}}>
-            <Text>Do you have a account?</Text>
-            <Text style={styles.bottomTextArea}>Sign In</Text>
+          <View style={styles.buttonAreaContainer}>
+            <TouchableOpacity
+              style={styles.buttonArea}
+              onPress={() => {
+                console.log(userName);
+                setLoading(true);
+                signUp();
+                // const e = register(userName, password);
+                //   console.log('Values' + e.uid)
+                //   props.navigation.navigate('SignIn');
+              }}>
+              {loading ? (
+                <ActivityIndicator color={Colors.thirdly} />
+              ) : (
+                <Text style={styles.buttonText}>Sign Up</Text>
+              )}
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -191,7 +215,8 @@ const styles = StyleSheet.create({
   buttonAreaContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 5,
+    marginBottom: 25,
   },
   buttonArea: {
     padding: 12,
@@ -207,7 +232,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   bottomText: {
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom: 5,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
