@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Alert,
   Image,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,6 +11,8 @@ import {
 import OptionsMenu from 'react-native-options-menu';
 const MoreIcon = require('../Images/more.png');
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Button from './Button';
+import Colors from '../constants/Colors';
 
 const FavouriteCard = props => {
   function showMenu() {
@@ -51,8 +54,23 @@ const FavouriteCard = props => {
             Rs. {props.product.price ? props.product.price : '300.00'}
           </Text>
           <Text>
-            Created By :{props.product.createdBy ? props.product.createdBy : 'damish'}
+            Created By :
+            {props.product.createdBy ? props.product.createdBy : 'damish'}
           </Text>
+          <Pressable
+            style={{
+              backgroundColor: Colors.forthly,
+              padding: 4,
+              width: '50%',
+              borderRadius: 4,
+            }}
+            onPress={props.onViewDetail}>
+            <View>
+              <Text style={{color: Colors.thirdly, textAlign: 'center'}}>
+                View details
+              </Text>
+            </View>
+          </Pressable>
         </View>
         <TouchableOpacity
           style={styles.contentAreaDelete}

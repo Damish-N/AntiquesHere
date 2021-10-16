@@ -95,39 +95,43 @@ const ProductDetailsView = ({route}) => {
         console.log('User updated!');
       });
   };
-  const {product, productId} = route.params;
+  const {product, productId, disableFav} = route.params;
   return (
     <ScrollView>
       <Image source={{uri: product.imageUrl}} style={styles.image} />
       <View>
-        <View style={styles.btn}>
-          <Button
-            color={Colors.primary}
-            title="Add to favourite"
-            onPress={() => {
-              console.log('Unable to add favourite');
-              if (listFav.includes(productId)) {
-                Alert.alert(
-                  'Unable to add favourite',
-                  'Already Exits in the favourite list ',
-                  [
-                    {
-                      text: 'Okay Got it ',
-                      onPress: () => {
-                        console.log('okey');
+        {disableFav ? (
+          <View style={styles.btn}>
+            <Button
+              color={Colors.primary}
+              title="Add to favourite"
+              onPress={() => {
+                console.log('Unable to add favourite');
+                if (listFav.includes(productId)) {
+                  Alert.alert(
+                    'Unable to add favourite',
+                    'Already Exits in the favourite list ',
+                    [
+                      {
+                        text: 'Okay Got it ',
+                        onPress: () => {
+                          console.log('okey');
+                        },
                       },
-                    },
-                  ],
-                );
-              } else {
-                setListFav(prevState => [...prevState, productId]);
-                console.log(listFav);
-                _updateDetailes();
-              }
-            }}
-            style={styles.btn}
-          />
-        </View>
+                    ],
+                  );
+                } else {
+                  setListFav(prevState => [...prevState, productId]);
+                  console.log(listFav);
+                  _updateDetailes();
+                }
+              }}
+              style={styles.btn}
+            />
+          </View>
+        ) : (
+          <Text> </Text>
+        )}
         <Text style={styles.price}>Rs:{product.price}</Text>
 
         <View
