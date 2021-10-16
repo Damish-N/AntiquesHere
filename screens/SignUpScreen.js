@@ -24,6 +24,12 @@ const SignUpScreen = props => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [contactNo, setContactNo] = useState('');
+  const [userNameError, setUserNameError] = useState('s');
+  const [passwordError, setPasswordError] = useState('s');
+  const [rePasswordError, setRePasswordError] = useState('s');
+  const [firstNameError, setFirstNameError] = useState('s');
+  const [lastNameError, setLastNameError] = useState('s');
+  const [contactNoError, setContactNoError] = useState('s');
 
   const [loading, setLoading] = useState(false);
 
@@ -69,6 +75,81 @@ const SignUpScreen = props => {
     }
   };
 
+  function userNameValidate() {
+    const re =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    let isValid = re.test(userName);
+    console.log(isValid);
+    if (userName == '') {
+      setUserNameError('Cannot be Empty');
+    } else if (!isValid) {
+      setUserNameError('Email type not Valid');
+    } else {
+      setUserNameError('');
+    }
+  }
+
+  function passwordValidate() {
+    const re =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/i;
+    let isValidPassword = re.test(password);
+    console.log(isValidPassword);
+    if (password === '') {
+      setPasswordError('Cannot be Empty');
+    } else if (!isValidPassword) {
+      setPasswordError('Password type not Valid');
+    } else {
+      setPasswordError('');
+    }
+  }
+
+  function rePasswordValidate() {
+    if (rePassword === '') {
+      setRePasswordError('Cannot be Empty');
+    } else if (rePassword !== password) {
+      setRePasswordError('Password are not matching');
+    } else {
+      setRePasswordError('');
+    }
+  }
+
+  function firstNameValidate() {
+    const reName = /^[a-zA-Z]+$/i;
+    const validName = reName.test(firstName);
+    if (firstName === '') {
+      setFirstNameError('Cannot be Empty');
+    } else if (!validName) {
+      setFirstNameError('Only letters allowed');
+    } else {
+      setFirstNameError('');
+    }
+  }
+
+  function lastNameValidate() {
+    const reName = /^[a-zA-Z]+$/i;
+    const validName = reName.test(lastName);
+    if (lastName === '') {
+      setLastNameError('Cannot be Empty');
+    } else if (!validName) {
+      setLastNameError('Only letters allowed');
+    } else {
+      setLastNameError('');
+    }
+  }
+
+  function phoneValidate() {
+    const regex =
+      /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/i;
+    const valid = regex.test(contactNo);
+    if (contactNo === '') {
+      setContactNoError('Cannot be Empty');
+    } else if (!valid) {
+      setContactNoError('Mobile number not valid');
+    } else {
+      setContactNoError('');
+    }
+  }
+
   return (
     <View style={styles.mainConatainer}>
       <View style={styles.headerSection}>
@@ -85,17 +166,30 @@ const SignUpScreen = props => {
           <Text style={styles.signInText}>Sign Up Page</Text>
           <TextInput
             style={styles.textArea}
-            placeholder="User Name"
+            placeholder="Email"
             value={userName}
             onChangeText={Value => setUserName(Value)}
+            onBlur={() => userNameValidate()}
           />
+          {userNameError === 'Cannot be Empty' ? (
+            <Text style={styles.errorHandles}>*Email {userNameError}</Text>
+          ) : userNameError === 'Email type not Valid' ? (
+            <Text style={styles.errorHandles}>*Email {userNameError}</Text>
+          ) : null}
           <TextInput
             style={styles.textArea}
             placeholder="Password"
             value={password}
             secureTextEntry={true}
+            maxLength={15}
             onChangeText={Value => setPassword(Value)}
+            onBlur={() => passwordValidate()}
           />
+          {passwordError === 'Cannot be Empty' ? (
+            <Text style={styles.errorHandles}>*password {passwordError}</Text>
+          ) : passwordError === 'Password type not Valid' ? (
+            <Text style={styles.errorHandles}>*password {passwordError}</Text>
+          ) : null}
 
           <TextInput
             style={styles.textArea}
@@ -103,25 +197,58 @@ const SignUpScreen = props => {
             value={rePassword}
             secureTextEntry={true}
             onChangeText={Value => setRePassword(Value)}
+            onBlur={() => rePasswordValidate()}
           />
+          {rePasswordError === 'Cannot be Empty' ? (
+            <Text style={styles.errorHandles}>*{rePasswordError}</Text>
+          ) : rePasswordError === 'Password are not matching' ? (
+            <Text style={styles.errorHandles}>*{rePasswordError}</Text>
+          ) : null}
           <TextInput
             style={styles.textArea}
             placeholder="First Name"
             value={firstName}
             onChangeText={Value => setFirstName(Value)}
+            onBlur={() => firstNameValidate()}
           />
+          {firstNameError === 'Cannot be Empty' ? (
+            <Text style={styles.errorHandles}>
+              *First Name {firstNameError}
+            </Text>
+          ) : firstNameError === 'Only letters allowed' ? (
+            <Text style={styles.errorHandles}>
+              *First Name {firstNameError}
+            </Text>
+          ) : null}
           <TextInput
             style={styles.textArea}
             placeholder="Last Name"
             value={lastName}
             onChangeText={Value => setLastName(Value)}
+            onBlur={() => lastNameValidate()}
           />
+          {lastNameError === 'Cannot be Empty' ? (
+            <Text style={styles.errorHandles}>*Last Name {lastNameError}</Text>
+          ) : lastNameError === 'Only letters allowed' ? (
+            <Text style={styles.errorHandles}>*Last Name {lastNameError}</Text>
+          ) : null}
+
           <TextInput
             style={styles.textArea}
             placeholder="Contact No"
             value={contactNo}
             onChangeText={Value => setContactNo(Value)}
+            onBlur={() => phoneValidate()}
           />
+          {contactNoError === 'Cannot be Empty' ? (
+            <Text style={styles.errorHandles}>
+              *Contact number {contactNoError}
+            </Text>
+          ) : contactNoError === 'Mobile number not valid' ? (
+            <Text style={styles.errorHandles}>
+              *Contact number {contactNoError}
+            </Text>
+          ) : null}
           <TouchableOpacity
             style={styles.bottomText}
             activeOpacity={0.6}
@@ -137,6 +264,14 @@ const SignUpScreen = props => {
 
           <View style={styles.buttonAreaContainer}>
             <TouchableOpacity
+              disabled={
+                userNameError !== '' ||
+                passwordError !== '' ||
+                rePasswordError !== '' ||
+                firstNameError !== '' ||
+                lastNameError !== '' ||
+                contactNoError !== ''
+              }
               style={styles.buttonArea}
               onPress={() => {
                 console.log(userName);
@@ -242,4 +377,5 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: Colors.primary,
   },
+  errorHandles: {color: 'red', marginLeft: 12},
 });
