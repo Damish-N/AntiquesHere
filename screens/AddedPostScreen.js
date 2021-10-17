@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  ActivityIndicator,
   View,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -18,6 +19,7 @@ import Colors from '../constants/Colors';
 import {Input} from 'react-native-elements';
 
 const AddedPostScreen = () => {
+  const [loading, setLoading] = useState(false);
   const [editable, setEditable] = useState(false);
   const [url, setUrl] = useState('');
   const [title, setTitle] = useState('');
@@ -125,6 +127,7 @@ const AddedPostScreen = () => {
       })
       .then(() => {
         console.log('Post added!');
+        setLoading(false);
         Alert.alert('Adding Post', 'SuccessFully added to system', [
           {
             text: 'Cancel',
@@ -151,6 +154,7 @@ const AddedPostScreen = () => {
           },
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ]);
+        setLoading(false);
         console.log(error);
       });
   };
@@ -280,7 +284,7 @@ const AddedPostScreen = () => {
             errorMessage={priceError !== 'No error' ? priceError : null}
           />
           <Input
-            label={'contact Number'}
+            label={'Contact Number'}
             onChangeText={v => setContactNo(v)}
             value={contactNo}
             onEndEditing={() => validateContactNo()}
@@ -296,18 +300,29 @@ const AddedPostScreen = () => {
             }
           />
           <View style={styles.buttonAreaContain}>
-            <Button
-              disabled={
-                titleError !== 'No error' ||
-                descriptionError !== 'No error' ||
-                priceError !== 'No error' ||
-                contactNoError !== 'No error' ||
-                creadtedByError !== 'No error'
-              }
-              title={'Submit'}
-              onPress={() => _uploadImage(imagePath)}
-              color={Colors.secondry}
-            />
+            {loading ? (
+              <ActivityIndicator />
+            ) : (
+              <Button
+                disabled={
+                  titleError !== 'No error' ||
+                  descriptionError !== 'No error' ||
+                  priceError !== 'No error' ||
+                  contactNoError !== 'No error' ||
+                  creadtedByError !== 'No error'
+                }
+                title={'Submit'}
+                onPress={() => {
+                  setLoading(true);
+                  _uploadImage(imagePath);
+                }}
+                // onPress={() => {
+                //   console.log('hello');
+                //   setLoading(true);
+                // }}
+                color={Colors.secondry}
+              />
+            )}
           </View>
         </View>
       </View>
