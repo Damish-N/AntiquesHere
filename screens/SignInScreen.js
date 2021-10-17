@@ -19,6 +19,8 @@ const SignInScreen = props => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [userNameError, setUserNameError] = useState('s');
+  const [passwordError, setPasswordError] = useState('s');
 
   const {login} = useContext(AuthContext);
 
@@ -70,6 +72,31 @@ const SignInScreen = props => {
       ]);
     }
   };
+  function userNameValidate() {
+    const re =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    let isValid = re.test(userName);
+    console.log(isValid);
+    if (userName == '') {
+      setUserNameError('Cannot be Empty');
+    } else if (!isValid) {
+      setUserNameError('Email type not Valid');
+    } else {
+      setUserNameError('');
+    }
+  }
+
+  function passwordValidate() {
+    const re =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/i;
+    let isValidPassword = re.test(password);
+    console.log(isValidPassword);
+    if (password === '') {
+      setPasswordError('Cannot be Empty');
+    } else {
+      setPasswordError('');
+    }
+  }
 
   return (
     <View style={styles.mainConatainer}>
@@ -87,20 +114,46 @@ const SignInScreen = props => {
 
         <TextInput
           style={styles.textArea}
-          placeholder="User Name"
+          placeholder="Email"
           value={userName}
-          onChangeText={Value => setUserName(Value)}
+          onChangeText={Value => {
+            setUserName(Value);
+            userNameValidate();
+          }}
+          placeholderTextColor={'grey'}
+          // onBlur={() => userNameValidate()}
         />
+        {userNameError === 'Cannot be Empty' ? (
+          <Text style={styles.errorHandles}>*Email {userNameError}</Text>
+        ) : userNameError === 'Email type not Valid' ? (
+          <Text style={styles.errorHandles}>*Email {userNameError}</Text>
+        ) : null}
         <TextInput
           style={styles.textArea}
           placeholder="Password"
           value={password}
           secureTextEntry={true}
-          onChangeText={Value => setPassword(Value)}
+          onChangeText={Value => {
+            setPassword(Value);
+            passwordValidate();
+          }}
+          placeholderTextColor={'grey'}
+          // onBlur={() => passwordValidate()}
         />
+        {passwordError === 'Cannot be Empty' ? (
+          <Text style={styles.errorHandles}>*password {passwordError}</Text>
+        ) : passwordError === 'Password type not Valid' ? (
+          <Text style={styles.errorHandles}>*password {passwordError}</Text>
+        ) : null}
 
         <View style={styles.buttonAreaContainer}>
           <TouchableOpacity
+            disabled={
+              userNameError !== '' ||
+              passwordError !== '' ||
+              userName == '' ||
+              password == ''
+            }
             style={styles.buttonArea}
             onPress={() => {
               setLoading(true);
@@ -123,8 +176,8 @@ const SignInScreen = props => {
             props.navigation.navigate('SignUp');
           }}>
           <View style={{flexDirection: 'row'}}>
-            <Text>Do you have a account?</Text>
-            <Text style={styles.bottomTextArea}>Sign In</Text>
+            <Text>Do you haven't a account?</Text>
+            <Text style={styles.bottomTextArea}>Sign Up</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -184,6 +237,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
     borderRadius: 10,
     paddingLeft: 10,
+    color: 'black',
   },
   buttonAreaContainer: {
     justifyContent: 'center',
@@ -213,4 +267,5 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: Colors.primary,
   },
+  errorHandles: {color: 'red', marginLeft: 12},
 });

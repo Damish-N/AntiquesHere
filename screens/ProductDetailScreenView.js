@@ -8,12 +8,14 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking,
 } from 'react-native';
 import Colors from '../constants/Colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ButtonIconPapper from '../components/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
+import {white} from 'react-native-paper/lib/typescript/styles/colors';
 
 const ProductDetailsView = ({route}) => {
   const [key, setKey] = useState('');
@@ -93,47 +95,122 @@ const ProductDetailsView = ({route}) => {
         console.log('User updated!');
       });
   };
-  const {product, productId} = route.params;
+  const {product, productId, disableFav} = route.params;
   return (
     <ScrollView>
       <Image source={{uri: product.imageUrl}} style={styles.image} />
       <View>
-        <View style={styles.btn}>
-          <Button
-            color={Colors.primary}
-            title="Add to favourite"
-            onPress={() => {
-              console.log('Unable to add favourite');
-              if (listFav.includes(productId)) {
-                Alert.alert(
-                  'Unable to add favourite',
-                  'Already Exits in the favourite list ',
-                  [
-                    {
-                      text: 'yes',
-                      onPress: () => {
-                        console.log('okey');
+        {disableFav ? (
+          <View style={styles.btn}>
+            <Button
+              color={Colors.primary}
+              title="Add to favourite"
+              onPress={() => {
+                console.log('Unable to add favourite');
+                if (listFav.includes(productId)) {
+                  Alert.alert(
+                    'Unable to add favourite',
+                    'Already Exits in the favourite list ',
+                    [
+                      {
+                        text: 'Okay Got it ',
+                        onPress: () => {
+                          console.log('okey');
+                        },
                       },
-                    },
-                  ],
-                );
-              } else {
-                setListFav(prevState => [...prevState, productId]);
-                console.log(listFav);
-                _updateDetailes();
-              }
-            }}
-            style={styles.btn}
-          />
-        </View>
-        <Text style={styles.price}>Rs:{product.price}</Text>
-        <Text style={styles.description}>{product.description}</Text>
-        <Text style={styles.description}>{productId}</Text>
-        {listFav.length > 0 ? (
-          listFav.map(e => <Text key={e}>{e}</Text>)
+                    ],
+                  );
+                } else {
+                  setListFav(prevState => [...prevState, productId]);
+                  console.log(listFav);
+                  _updateDetailes();
+                }
+              }}
+              style={styles.btn}
+            />
+          </View>
         ) : (
-          <Text>no Data </Text>
+          <Text> </Text>
         )}
+        <Text style={styles.price}>Rs:{product.price}</Text>
+
+        <View
+          style={{
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <View style={styles.descriptionCard}>
+            <Text style={styles.description1}>{product.description}</Text>
+          </View>
+        </View>
+
+        <Text style={styles.description}>SELLING ID : {productId}</Text>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-around',
+            marginVertical: 10,
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              console.log(product.contactNo);
+              Linking.openURL('tel:' + product.contactNo).then(supported => {
+                if (!supported) {
+                  Alert.alert('Phone number is not available');
+                } else {
+                  return Linking.openURL('tel:' + product.contactNo);
+                }
+              });
+            }}
+            style={{
+              width: '30%',
+              backgroundColor: Colors.forthly,
+              justifyContent: 'center',
+              padding: 10,
+              borderRadius: 10,
+            }}>
+            <Text style={{textAlign: 'center', color: Colors.thirdly}}>
+              Call
+            </Text>
+            <Text style={{textAlign: 'center', color: Colors.thirdly}}>
+              {product.contactNo}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              console.log(product.contactNo);
+              Linking.openURL('sms:' + product.contactNo).then(supported => {
+                if (!supported) {
+                  Alert.alert('Phone number is not available');
+                } else {
+                  return Linking.openURL('sms:' + product.contactNo);
+                }
+              });
+            }}
+            style={{
+              width: '30%',
+              backgroundColor: Colors.forthly,
+              justifyContent: 'center',
+              padding: 10,
+              borderRadius: 10,
+            }}>
+            <Text style={{textAlign: 'center', color: Colors.thirdly}}>
+              Message
+            </Text>
+            <Text style={{textAlign: 'center', color: Colors.thirdly}}>
+              {product.contactNo}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/*{listFav.length > 0 ? (*/}
+        {/*  listFav.map(e => <Text key={e}>{e}</Text>)*/}
+        {/*) : (*/}
+        {/*  <Text>no Data </Text>*/}
+        {/*)}*/}
       </View>
       <View>
         {/*<TouchableOpacity>*/}
@@ -158,16 +235,31 @@ const styles = StyleSheet.create({
     color: 'black',
     marginVertical: 10,
   },
+  description1: {
+    textAlign: 'justify',
+    fontSize: 18,
+    paddingHorizontal: 15,
+    color: '#595656',
+  },
   description: {
     textAlign: 'center',
     fontSize: 18,
     paddingHorizontal: 15,
-    color: '#888',
+    color: '#595656',
   },
   btn: {
     marginVertical: 10,
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'center',
+  },
+  descriptionCard: {
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: '#d0cccc',
+    padding: 4,
+    width: '90%',
+    // boxShadow:
+    marginBottom: 10,
   },
 });

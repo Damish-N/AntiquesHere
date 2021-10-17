@@ -92,6 +92,7 @@ const HomeScreen = props => {
               props.navigation.navigate('ProductDetailScreenView', {
                 product: itemData.item,
                 productId: idList[itemData.index],
+                disableFav: true,
               });
               // {
               //     productId: itemData.item.id,

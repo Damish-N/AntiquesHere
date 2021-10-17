@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import {
+  Alert,
   Button,
   Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
+  ActivityIndicator,
   View,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -17,6 +19,7 @@ import Colors from '../constants/Colors';
 import {Input} from 'react-native-elements';
 
 const AddedPostScreen = () => {
+  const [loading, setLoading] = useState(false);
   const [editable, setEditable] = useState(false);
   const [url, setUrl] = useState('');
   const [title, setTitle] = useState('');
@@ -25,18 +28,30 @@ const AddedPostScreen = () => {
   const [contactNo, setContactNo] = useState('');
   const [creadtedBy, setCreadtedBy] = useState('');
   const [imagePath, setImagePath] = useState(
-    'https://api-private.atlassian.com/users/8f525203adb5093c5954b43a5b6420c2/avatar',
+    'https://www.pinclipart.com/picdir/middle/126-1266771_post-page-to-add-pictures-comments-add-post.png',
   );
+  const [titleError, setTiltleError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
+  const [priceError, setPriceError] = useState('');
+  const [contactNoError, setContactNoError] = useState('');
+  const [creadtedByError, setCreadtedByError] = useState('');
 
   function _uploadByCam() {
     ImagePicker.openCamera({
       width: 300,
       height: 400,
       cropping: true,
-    }).then(image => {
-      console.log(image.path);
-      setImagePath(image.path);
-    });
+    })
+      .then(image => {
+        console.log(image.path);
+        setImagePath(image.path);
+      })
+      .catch(error => {
+        console.log(error);
+        setImagePath(
+          'https://www.pinclipart.com/picdir/middle/126-1266771_post-page-to-add-pictures-comments-add-post.png',
+        );
+      });
   }
 
   function _uploadByGallery() {
@@ -44,14 +59,21 @@ const AddedPostScreen = () => {
       width: 300,
       height: 400,
       cropping: true,
-    }).then(image => {
-      console.log(image);
-      setImagePath(image.path);
-      if (image) {
-        // _uploadImage(image.path);
-        // _getUrl('004.png');
-      }
-    });
+    })
+      .then(image => {
+        console.log(image);
+        setImagePath(image.path);
+        if (image) {
+          // _uploadImage(image.path);
+          // _getUrl('004.png');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        setImagePath(
+          'https://www.pinclipart.com/picdir/middle/126-1266771_post-page-to-add-pictures-comments-add-post.png',
+        );
+      });
   }
   const _getUrl = async image => {
     const url = await storage()
@@ -105,14 +127,35 @@ const AddedPostScreen = () => {
       })
       .then(() => {
         console.log('Post added!');
+        setLoading(false);
+        Alert.alert('Adding Post', 'SuccessFully added to system', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
         setCreadtedBy('');
         setPrice('');
         setContactNo('');
         setTitle('');
         setDescription('');
         setImagePath(
-          'https://api-private.atlassian.com/users/8f525203adb5093c5954b43a5b6420c2/avatar',
+          'https://www.pinclipart.com/picdir/middle/126-1266771_post-page-to-add-pictures-comments-add-post.png',
         );
+      })
+      .catch(error => {
+        Alert.alert('Adding Post', 'Error on Adding', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+        setLoading(false);
+        console.log(error);
       });
   };
 
@@ -139,6 +182,51 @@ const AddedPostScreen = () => {
       console.log(e);
     }
   };
+
+  function validateTitle() {
+    if (title === '') {
+      setTiltleError('*Title must be added');
+    } else {
+      setTiltleError('No error');
+    }
+  }
+
+  function validateDescription() {
+    if (description === '') {
+      setDescriptionError('*Description must be added');
+    } else {
+      setDescriptionError('No error');
+    }
+  }
+
+  function validatePrice() {
+    if (price === '') {
+      setPriceError('*Price cannot be empty');
+    } else {
+      setPriceError('No error');
+    }
+  }
+
+  function validateContactNo() {
+    const regex =
+      /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/i;
+    const valid = regex.test(contactNo);
+    if (contactNo === '') {
+      setContactNoError('*Contact no cannot be empty');
+    } else if (!valid) {
+      setContactNoError('*Contact number is not valid');
+    } else {
+      setContactNoError('No error');
+    }
+  }
+
+  function validateCreatedBy() {
+    if (creadtedBy === '') {
+      setCreadtedByError('*Created by cannot be empty');
+    } else {
+      setCreadtedByError('No error');
+    }
+  }
 
   return (
     <ScrollView style={styles.containerScreen}>
@@ -175,34 +263,66 @@ const AddedPostScreen = () => {
             label={'Title'}
             onChangeText={v => setTitle(v)}
             value={title}
+            errorMessage={titleError !== 'No error' ? titleError : null}
+            onEndEditing={() => validateTitle()}
           />
           <Input
             label={'Description'}
             onChangeText={v => setDescription(v)}
             value={description}
+            onEndEditing={() => validateDescription()}
+            errorMessage={
+              descriptionError !== 'No error' ? descriptionError : null
+            }
           />
           <Input
             label={'Price'}
             onChangeText={v => setPrice(v)}
             value={price}
             keyboardType={'numeric'}
+            onEndEditing={() => validatePrice()}
+            errorMessage={priceError !== 'No error' ? priceError : null}
           />
           <Input
-            label={'contact Number'}
+            label={'Contact Number'}
             onChangeText={v => setContactNo(v)}
             value={contactNo}
+            onEndEditing={() => validateContactNo()}
+            errorMessage={contactNoError !== 'No error' ? contactNoError : null}
           />
           <Input
             label={'Created By'}
             onChangeText={v => setCreadtedBy(v)}
             value={creadtedBy}
+            onEndEditing={() => validateCreatedBy()}
+            errorMessage={
+              creadtedByError !== 'No error' ? creadtedByError : null
+            }
           />
           <View style={styles.buttonAreaContain}>
-            <Button
-              title={'Submit'}
-              onPress={() => _uploadImage(imagePath)}
-              color={Colors.secondry}
-            />
+            {loading ? (
+              <ActivityIndicator />
+            ) : (
+              <Button
+                disabled={
+                  titleError !== 'No error' ||
+                  descriptionError !== 'No error' ||
+                  priceError !== 'No error' ||
+                  contactNoError !== 'No error' ||
+                  creadtedByError !== 'No error'
+                }
+                title={'Submit'}
+                onPress={() => {
+                  setLoading(true);
+                  _uploadImage(imagePath);
+                }}
+                // onPress={() => {
+                //   console.log('hello');
+                //   setLoading(true);
+                // }}
+                color={Colors.secondry}
+              />
+            )}
           </View>
         </View>
       </View>

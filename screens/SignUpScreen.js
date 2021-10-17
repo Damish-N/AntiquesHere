@@ -10,6 +10,7 @@ import {
   TextInput,
   ActivityIndicator,
   Alert,
+  ScrollView,
 } from 'react-native';
 import Colors from '../constants/Colors';
 import {AuthContext} from '../navigations/authentication';
@@ -19,6 +20,17 @@ import firestore from '@react-native-firebase/firestore';
 const SignUpScreen = props => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [rePassword, setRePassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [contactNo, setContactNo] = useState('');
+  const [userNameError, setUserNameError] = useState('s');
+  const [passwordError, setPasswordError] = useState('s');
+  const [rePasswordError, setRePasswordError] = useState('s');
+  const [firstNameError, setFirstNameError] = useState('s');
+  const [lastNameError, setLastNameError] = useState('s');
+  const [contactNoError, setContactNoError] = useState('s');
+
   const [loading, setLoading] = useState(false);
 
   const {register} = useContext(AuthContext);
@@ -29,9 +41,9 @@ const SignUpScreen = props => {
       try {
         await firestore().collection('User').add({
           email: userName,
-          firstName: 'damish',
-          lastName: 'nisal',
-          mobile: '0776560118',
+          firstName: firstName,
+          lastName: lastName,
+          mobile: contactNo,
           listOfFav: [],
         });
         setLoading(false);
@@ -63,6 +75,82 @@ const SignUpScreen = props => {
     }
   };
 
+  function userNameValidate() {
+    const re =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    let isValid = re.test(userName);
+    console.log(isValid);
+    if (userName == '') {
+      setUserNameError('Cannot be Empty');
+    } else if (!isValid) {
+      setUserNameError('Email type not Valid');
+    } else {
+      setUserNameError('');
+    }
+  }
+
+  function passwordValidate() {
+    const re =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/i;
+    let isValidPassword = re.test(password);
+    console.log(isValidPassword);
+    if (password === '') {
+      setPasswordError('Cannot be Empty');
+    } else if (!isValidPassword) {
+      setPasswordError('Password type not Valid');
+    } else {
+      setPasswordError('');
+    }
+  }
+
+  function rePasswordValidate() {
+    console.log(rePassword, password);
+    if (rePassword === '') {
+      setRePasswordError('Cannot be Empty');
+    } else if (rePassword !== password) {
+      setRePasswordError('Password are not matching');
+    } else {
+      setRePasswordError('');
+    }
+  }
+
+  function firstNameValidate() {
+    const reName = /^[a-zA-Z]+$/i;
+    const validName = reName.test(firstName);
+    if (firstName === '') {
+      setFirstNameError('Cannot be Empty');
+    } else if (!validName) {
+      setFirstNameError('Only letters allowed');
+    } else {
+      setFirstNameError('');
+    }
+  }
+
+  function lastNameValidate() {
+    const reName = /^[a-zA-Z]+$/i;
+    const validName = reName.test(lastName);
+    if (lastName === '') {
+      setLastNameError('Cannot be Empty');
+    } else if (!validName) {
+      setLastNameError('Only letters allowed');
+    } else {
+      setLastNameError('');
+    }
+  }
+
+  function phoneValidate() {
+    const regex =
+      /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/i;
+    const valid = regex.test(contactNo);
+    if (contactNo === '') {
+      setContactNoError('Cannot be Empty');
+    } else if (!valid) {
+      setContactNoError('Mobile number not valid');
+    } else {
+      setContactNoError('');
+    }
+  }
+
   return (
     <View style={styles.mainConatainer}>
       <View style={styles.headerSection}>
@@ -74,63 +162,158 @@ const SignUpScreen = props => {
         </View>
         <Text style={styles.welcomeText}>Welcome to Antiques</Text>
       </View>
-      <View style={styles.footerSection}>
-        <Text style={styles.signInText}>Sign Up Page</Text>
+      <ScrollView style={styles.footerSection}>
+        <View>
+          <Text style={styles.signInText}>Sign Up Page</Text>
+          <TextInput
+            style={styles.textArea}
+            placeholder="Email"
+            value={userName}
+            onChangeText={Value => {
+              setUserName(Value);
+              userNameValidate();
+            }}
+            placeholderTextColor={'grey'}
+            // onBlur={() => userNameValidate()}
+          />
+          {userNameError === 'Cannot be Empty' ? (
+            <Text style={styles.errorHandles}>*Email {userNameError}</Text>
+          ) : userNameError === 'Email type not Valid' ? (
+            <Text style={styles.errorHandles}>*Email {userNameError}</Text>
+          ) : null}
+          <TextInput
+            style={styles.textArea}
+            placeholder="Password"
+            value={password}
+            secureTextEntry={true}
+            maxLength={15}
+            placeholderTextColor={'grey'}
+            onChangeText={Value => {
+              setPassword(Value);
+              passwordValidate();
+            }}
+            // onBlur={() => passwordValidate()}
+          />
+          {passwordError === 'Cannot be Empty' ? (
+            <Text style={styles.errorHandles}>*password {passwordError}</Text>
+          ) : passwordError === 'Password type not Valid' ? (
+            <Text style={styles.errorHandles}>*password {passwordError}</Text>
+          ) : null}
 
-        <TextInput
-          style={styles.textArea}
-          placeholder="User Name"
-          value={userName}
-          onChangeText={Value => setUserName(Value)}
-        />
-        <TextInput
-          style={styles.textArea}
-          placeholder="Password"
-          value={password}
-          secureTextEntry={true}
-          onChangeText={Value => setPassword(Value)}
-        />
+          <TextInput
+            style={styles.textArea}
+            placeholder="Re Enter Password"
+            value={rePassword}
+            secureTextEntry={true}
+            placeholderTextColor={'grey'}
+            onChangeText={Value => {
+              setRePassword(Value);
+              // rePasswordValidate();
+            }}
+            onBlur={() => rePasswordValidate()}
+          />
+          {rePasswordError === 'Cannot be Empty' ? (
+            <Text style={styles.errorHandles}>*{rePasswordError}</Text>
+          ) : rePasswordError === 'Password are not matching' ? (
+            <Text style={styles.errorHandles}>*{rePasswordError}</Text>
+          ) : null}
+          <TextInput
+            style={styles.textArea}
+            placeholder="First Name"
+            value={firstName}
+            onChangeText={Value => {
+              setFirstName(Value);
+              firstNameValidate();
+            }}
+            placeholderTextColor={'grey'}
+            // onBlur={() => firstNameValidate()}
+          />
+          {firstNameError === 'Cannot be Empty' ? (
+            <Text style={styles.errorHandles}>
+              *First Name {firstNameError}
+            </Text>
+          ) : firstNameError === 'Only letters allowed' ? (
+            <Text style={styles.errorHandles}>
+              *First Name {firstNameError}
+            </Text>
+          ) : null}
+          <TextInput
+            style={styles.textArea}
+            placeholder="Last Name"
+            value={lastName}
+            onChangeText={Value => {
+              setLastName(Value);
+              lastNameValidate();
+            }}
+            placeholderTextColor={'grey'}
+            // onBlur={() => lastNameValidate()}
+          />
+          {lastNameError === 'Cannot be Empty' ? (
+            <Text style={styles.errorHandles}>*Last Name {lastNameError}</Text>
+          ) : lastNameError === 'Only letters allowed' ? (
+            <Text style={styles.errorHandles}>*Last Name {lastNameError}</Text>
+          ) : null}
 
-        <TextInput
-          style={styles.textArea}
-          placeholder="Re Enter Password"
-          value={password}
-          secureTextEntry={true}
-          onChangeText={Value => setPassword(Value)}
-        />
-
-        <View style={styles.buttonAreaContainer}>
+          <TextInput
+            style={styles.textArea}
+            placeholder="Contact No"
+            value={contactNo}
+            onChangeText={Value => {
+              setContactNo(Value);
+            }}
+            placeholderTextColor={'grey'}
+            onBlur={() => phoneValidate()}
+          />
+          {contactNoError === 'Cannot be Empty' ? (
+            <Text style={styles.errorHandles}>
+              *Contact number {contactNoError}
+            </Text>
+          ) : contactNoError === 'Mobile number not valid' ? (
+            <Text style={styles.errorHandles}>
+              *Contact number {contactNoError}
+            </Text>
+          ) : null}
           <TouchableOpacity
-            style={styles.buttonArea}
+            style={styles.bottomText}
+            activeOpacity={0.6}
+            underlayColor="#DDDDDD"
             onPress={() => {
-              console.log(userName);
-              setLoading(true);
-              signUp();
-              // const e = register(userName, password);
-              //   console.log('Values' + e.uid)
-              //   props.navigation.navigate('SignIn');
+              props.navigation.navigate('SignIn');
             }}>
-            {loading ? (
-              <ActivityIndicator color={Colors.thirdly} />
-            ) : (
-              <Text style={styles.buttonText}>Sign Up</Text>
-            )}
+            <View style={{flexDirection: 'row'}}>
+              <Text>Do you have a account?</Text>
+              <Text style={styles.bottomTextArea}>Sign In</Text>
+            </View>
           </TouchableOpacity>
-        </View>
 
-        <TouchableOpacity
-          style={styles.bottomText}
-          activeOpacity={0.6}
-          underlayColor="#DDDDDD"
-          onPress={() => {
-            props.navigation.navigate('SignIn');
-          }}>
-          <View style={{flexDirection: 'row'}}>
-            <Text>Do you have a account?</Text>
-            <Text style={styles.bottomTextArea}>Sign In</Text>
+          <View style={styles.buttonAreaContainer}>
+            <TouchableOpacity
+              disabled={
+                userNameError !== '' ||
+                passwordError !== '' ||
+                rePasswordError !== '' ||
+                firstNameError !== '' ||
+                lastNameError !== '' ||
+                contactNoError !== ''
+              }
+              style={styles.buttonArea}
+              onPress={() => {
+                console.log(userName);
+                setLoading(true);
+                signUp();
+                // const e = register(userName, password);
+                //   console.log('Values' + e.uid)
+                //   props.navigation.navigate('SignIn');
+              }}>
+              {loading ? (
+                <ActivityIndicator color={Colors.thirdly} />
+              ) : (
+                <Text style={styles.buttonText}>Sign Up</Text>
+              )}
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -187,11 +370,13 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
     borderRadius: 10,
     paddingLeft: 10,
+    color: 'black',
   },
   buttonAreaContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 5,
+    marginBottom: 25,
   },
   buttonArea: {
     padding: 12,
@@ -207,7 +392,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   bottomText: {
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom: 5,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -216,4 +402,5 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: Colors.primary,
   },
+  errorHandles: {color: 'red', marginLeft: 12},
 });

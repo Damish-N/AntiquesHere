@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Alert,
   Image,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,6 +11,8 @@ import {
 import OptionsMenu from 'react-native-options-menu';
 const MoreIcon = require('../Images/more.png');
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Button from './Button';
+import Colors from '../constants/Colors';
 
 const FavouriteCard = props => {
   function showMenu() {
@@ -21,6 +24,12 @@ const FavouriteCard = props => {
           text: 'yes',
           onPress: () => {
             props.onClick();
+          },
+        },
+        {
+          text: 'No',
+          onPress: () => {
+            console.log('Cancel');
           },
         },
       ],
@@ -38,17 +47,36 @@ const FavouriteCard = props => {
         <View style={styles.imageArea}>
           <Image
             source={{
-              uri: 'https://5.imimg.com/data5/KC/PC/MY-38629861/dummy-chronograph-watch-500x500.jpg',
+              uri: props.product.imageUrl
+                ? props.product.imageUrl
+                : 'https://5.imimg.com/data5/KC/PC/MY-38629861/dummy-chronograph-watch-500x500.jpg',
             }}
             style={styles.image}
           />
         </View>
         <View style={styles.contentArea}>
-          <Text style={{fontSize: 20, marginBottom: 3}}>{props.title}</Text>
+          <Text style={{fontSize: 17, marginBottom: 3}}>{props.title}</Text>
           <Text style={{fontSize: 14, color: 'grey', marginBottom: 3}}>
-            Rs.300.00
+            Rs. {props.product.price ? props.product.price : '300.00'}
           </Text>
-          <Text>created by:damish</Text>
+          <Text>
+            Created By :
+            {props.product.createdBy ? props.product.createdBy : 'damish'}
+          </Text>
+          <Pressable
+            style={{
+              backgroundColor: Colors.forthly,
+              padding: 4,
+              width: '50%',
+              borderRadius: 4,
+            }}
+            onPress={props.onViewDetail}>
+            <View>
+              <Text style={{color: Colors.thirdly, textAlign: 'center'}}>
+                View details
+              </Text>
+            </View>
+          </Pressable>
         </View>
         <TouchableOpacity
           style={styles.contentAreaDelete}

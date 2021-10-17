@@ -140,13 +140,13 @@ const FavouriteScreen = props => {
       .then(() => {
         // setLoadingUpdate(false);
         Alert.alert(
-          'Added to Favourite',
-          'Successfully added to favourite list',
+          'Delete Favourite list',
+          'Successfully deleted from favourite list',
           [
             {
-              text: 'Okey',
+              text: 'Okay',
               onPress: () => {
-                console.log('okey');
+                console.log('okay');
               },
             },
           ],
@@ -161,7 +161,22 @@ const FavouriteScreen = props => {
         renderItem={r => (
           <FavouriteCard
             title={r.item.title}
+            product={r.item}
             onClick={() => clickHere(listFav[r.index], r.index)}
+            onViewDetail={() => {
+              props.navigation.navigate('ProductDetailScreenView', {
+                product: r.item,
+                productId: 'xsk9brwPMu4GAkDqTG7T',
+                disableFav: false,
+              });
+              // {
+              //     productId: itemData.item.id,
+              //     productTitle: itemData.item.title,
+              //     product: itemData.item,
+              console.log('Hello');
+              console.log('Hello----?', r.item);
+              // }
+            }}
           />
         )}
       />
