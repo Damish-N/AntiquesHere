@@ -140,13 +140,13 @@ const FavouriteScreen = props => {
       .then(() => {
         // setLoadingUpdate(false);
         Alert.alert(
-          'Added to Favourite',
-          'Successfully added to favourite list',
+          'Delete Favourite list',
+          'Successfully deleted from favourite list',
           [
             {
-              text: 'Okey',
+              text: 'Okay',
               onPress: () => {
-                console.log('okey');
+                console.log('okay');
               },
             },
           ],

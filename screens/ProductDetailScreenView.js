@@ -180,7 +180,16 @@ const ProductDetailsView = ({route}) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => console.log('Message')}
+            onPress={() => {
+              console.log(product.contactNo);
+              Linking.openURL('sms:' + product.contactNo).then(supported => {
+                if (!supported) {
+                  Alert.alert('Phone number is not available');
+                } else {
+                  return Linking.openURL('sms:' + product.contactNo);
+                }
+              });
+            }}
             style={{
               width: '30%',
               backgroundColor: Colors.forthly,

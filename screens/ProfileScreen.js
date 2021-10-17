@@ -28,6 +28,10 @@ const ProfileScreen = () => {
   const [userProfileData, setUserProfileData] = useState({});
   const [editable, setEditable] = useState(false);
   const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const [contactNoError, setContactNoError] = useState('s');
+  const [firstNameError, setFirstNameError] = useState('s');
+  const [lastNameError, setLastNameError] = useState('s');
+  const [phoneError, setPhoneError] = useState('s');
 
   useEffect(() => {
     _retrieveData();
@@ -103,18 +107,52 @@ const ProfileScreen = () => {
         setLoadingUpdate(false);
         Alert.alert('Update Profile', 'Successfully updated profile', [
           {
-            text: 'yes',
+            text: 'Okay',
             onPress: () => {
-              console.log('okey');
+              console.log('okay');
             },
           },
         ]);
         console.log('User updated!');
       });
   };
-  return loading ? (
-    <ActivityIndicator />
-  ) : (
+
+  function firstNameValidate() {
+    const reName = /^[a-zA-Z]+$/i;
+    const validName = reName.test(firstName);
+    if (firstName === '') {
+      setFirstNameError('Cannot be Empty');
+    } else if (!validName) {
+      setFirstNameError('Only letters allowed');
+    } else {
+      setFirstNameError('');
+    }
+  }
+
+  function lastNameValidate() {
+    const reName = /^[a-zA-Z]+$/i;
+    const validName = reName.test(lastName);
+    if (lastName === '') {
+      setLastNameError('Cannot be Empty');
+    } else if (!validName) {
+      setLastNameError('Only letters allowed');
+    } else {
+      setLastNameError('');
+    }
+  }
+  function phoneValidate() {
+    const regex =
+      /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/i;
+    const valid = regex.test(phone);
+    if (phone === '') {
+      setPhoneError('Cannot be Empty');
+    } else if (!valid) {
+      setPhoneError('Mobile number not valid');
+    } else {
+      setPhoneError('');
+    }
+  }
+  return (
     <ScrollView style={styles.container}>
       <View style={styles.imageContainer}>
         <Text style={styles.headerWelcome}>Hello!</Text>
@@ -146,15 +184,30 @@ const ProfileScreen = () => {
         <Input
           label={'First Name'}
           editable={editable}
-          onChangeText={value => setFirstName(value)}
+          onChangeText={value => {
+            setFirstName(value);
+            firstNameValidate();
+          }}
+          errorMessage={
+            firstNameError !== '' && firstNameError !== 's'
+              ? firstNameError
+              : null
+          }
           value={firstName}
+          onBlur={() => firstNameValidate()}
           placeholder={'First Name'}
         />
         <Input
           label={'Last Name'}
           editable={editable}
-          onChangeText={value => setLastName(value)}
+          onChangeText={value => {
+            setLastName(value);
+          }}
           value={lastName}
+          errorMessage={
+            lastNameError !== '' && lastNameError !== 's' ? lastNameError : null
+          }
+          onBlur={() => lastNameValidate()}
           placeholder={'Last Name'}
         />
         <Input
@@ -163,16 +216,24 @@ const ProfileScreen = () => {
           onChangeText={value => setPhone(value)}
           value={phone}
           placeholder={'Mobile Number'}
+          onBlur={() => phoneValidate()}
+          errorMessage={
+            phoneError !== '' && phoneError !== 's' ? phoneError : null
+          }
         />
         <View style={styles.btnContainer}>
-          <Button
-            title={'Update Profile'}
-            color={Colors.secondry}
-            onPress={() => {
-              setLoadingUpdate(true);
-              _updateDetailes();
-            }}
-          />
+          {loadingUpdate ? (
+            <ActivityIndicator />
+          ) : (
+            <Button
+              title={'Update Profile'}
+              color={Colors.secondry}
+              onPress={() => {
+                setLoadingUpdate(true);
+                _updateDetailes();
+              }}
+            />
+          )}
         </View>
       </View>
     </ScrollView>

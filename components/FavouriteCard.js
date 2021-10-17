@@ -26,6 +26,12 @@ const FavouriteCard = props => {
             props.onClick();
           },
         },
+        {
+          text: 'No',
+          onPress: () => {
+            console.log('Cancel');
+          },
+        },
       ],
     );
     console.log('hello Menu');
