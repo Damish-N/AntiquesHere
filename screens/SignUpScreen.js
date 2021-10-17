@@ -104,6 +104,7 @@ const SignUpScreen = props => {
   }
 
   function rePasswordValidate() {
+    console.log(rePassword, password);
     if (rePassword === '') {
       setRePasswordError('Cannot be Empty');
     } else if (rePassword !== password) {
@@ -168,8 +169,12 @@ const SignUpScreen = props => {
             style={styles.textArea}
             placeholder="Email"
             value={userName}
-            onChangeText={Value => setUserName(Value)}
-            onBlur={() => userNameValidate()}
+            onChangeText={Value => {
+              setUserName(Value);
+              userNameValidate();
+            }}
+            placeholderTextColor={'grey'}
+            // onBlur={() => userNameValidate()}
           />
           {userNameError === 'Cannot be Empty' ? (
             <Text style={styles.errorHandles}>*Email {userNameError}</Text>
@@ -182,8 +187,12 @@ const SignUpScreen = props => {
             value={password}
             secureTextEntry={true}
             maxLength={15}
-            onChangeText={Value => setPassword(Value)}
-            onBlur={() => passwordValidate()}
+            placeholderTextColor={'grey'}
+            onChangeText={Value => {
+              setPassword(Value);
+              passwordValidate();
+            }}
+            // onBlur={() => passwordValidate()}
           />
           {passwordError === 'Cannot be Empty' ? (
             <Text style={styles.errorHandles}>*password {passwordError}</Text>
@@ -196,7 +205,11 @@ const SignUpScreen = props => {
             placeholder="Re Enter Password"
             value={rePassword}
             secureTextEntry={true}
-            onChangeText={Value => setRePassword(Value)}
+            placeholderTextColor={'grey'}
+            onChangeText={Value => {
+              setRePassword(Value);
+              // rePasswordValidate();
+            }}
             onBlur={() => rePasswordValidate()}
           />
           {rePasswordError === 'Cannot be Empty' ? (
@@ -208,8 +221,12 @@ const SignUpScreen = props => {
             style={styles.textArea}
             placeholder="First Name"
             value={firstName}
-            onChangeText={Value => setFirstName(Value)}
-            onBlur={() => firstNameValidate()}
+            onChangeText={Value => {
+              setFirstName(Value);
+              firstNameValidate();
+            }}
+            placeholderTextColor={'grey'}
+            // onBlur={() => firstNameValidate()}
           />
           {firstNameError === 'Cannot be Empty' ? (
             <Text style={styles.errorHandles}>
@@ -224,8 +241,12 @@ const SignUpScreen = props => {
             style={styles.textArea}
             placeholder="Last Name"
             value={lastName}
-            onChangeText={Value => setLastName(Value)}
-            onBlur={() => lastNameValidate()}
+            onChangeText={Value => {
+              setLastName(Value);
+              lastNameValidate();
+            }}
+            placeholderTextColor={'grey'}
+            // onBlur={() => lastNameValidate()}
           />
           {lastNameError === 'Cannot be Empty' ? (
             <Text style={styles.errorHandles}>*Last Name {lastNameError}</Text>
@@ -237,7 +258,10 @@ const SignUpScreen = props => {
             style={styles.textArea}
             placeholder="Contact No"
             value={contactNo}
-            onChangeText={Value => setContactNo(Value)}
+            onChangeText={Value => {
+              setContactNo(Value);
+            }}
+            placeholderTextColor={'grey'}
             onBlur={() => phoneValidate()}
           />
           {contactNoError === 'Cannot be Empty' ? (
@@ -346,6 +370,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
     borderRadius: 10,
     paddingLeft: 10,
+    color: 'black',
   },
   buttonAreaContainer: {
     justifyContent: 'center',
