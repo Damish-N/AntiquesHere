@@ -5,4 +5,4 @@ AntiquesHere App is a mobile application available on both Android and iOS platf
                 selection of antique pieces, the app makes it easy for collectors and enthusiasts to find and purchase
                 unique items from the comfort of their own device.
                 
-                ![antiques](https://user-images.githubusercontent.com/54845040/211174986-cb5391fa-c2a4-4c4d-8225-c081d65ce2ca.png)
+                ![antiques](/https://github.com/Damish-N/AntiquesHere/blob/main/Images/antiques.png)
